@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Insights from './pages/Insights';
 import Goals from './pages/Goals';
 import Forecaster from './pages/Forecaster';
@@ -11,10 +11,386 @@ function App() {
   const [selectedTab, setSelectedTab] = useState(0);
   const [currentKPI, setCurrentKPI] = useState('Total Revenue (aggregate)');
   const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const [focusMode, setFocusMode] = useState(false);
+  const [highlightedElement, setHighlightedElement] = useState(null);
 
   const handleTabChange = (index) => {
     setSelectedTab(index);
   };
+
+  const toggleFocusMode = () => {
+    setFocusMode(!focusMode);
+    if (!focusMode) {
+      setHighlightedElement(null);
+      // When starting focus mode, delay setting the first highlighted element
+      setTimeout(() => {
+        setHighlightedElement(0);
+      }, 100);
+    }
+  };
+
+  const nextHighlight = () => {
+    // Dynamically determine key element count based on current page
+    const pageNames = ['insights', 'goals', 'forecaster', 'optimizer', 'reporter', 'refreshTracker', 'configure'];
+    const currentPage = pageNames[selectedTab];
+    
+    const elementCounts = {
+      insights: 7,  // 7 elements: key-metrics-grid, insights-section, performance-summary, marketing-effectiveness-chart.chart-container, performance-vs-spend-chart.chart-container, todo-items, header-section
+      goals: 3,
+      forecaster: 3,
+      optimizer: 3,
+      reporter: 3,
+      refreshTracker: 3,
+      configure: 3
+    };
+    
+    const maxElements = elementCounts[currentPage] || 7;
+    
+    if (highlightedElement === null) {
+      setHighlightedElement(0);
+    } else {
+      const nextIndex = (highlightedElement + 1) % maxElements;
+      setHighlightedElement(nextIndex);
+    }
+  };
+
+  // Get highlighted element label and insights - based on actual components
+  const getHighlightInfo = (index) => {
+    const pageNames = ['insights', 'goals', 'forecaster', 'optimizer', 'reporter', 'refreshTracker', 'configure'];
+    const currentPage = pageNames[selectedTab];
+    
+    const insightsData = {
+      insights: [
+        {
+          label: 'Key Metrics Cards',
+          insights: [
+            'Total ROAS reached 4.2x, excellent performance, 8% above target',
+            'Total spend $140K, up 8% YoY, budget utilization is reasonable',
+            'Conversions 3,245, up 15%, conversion rate continues to improve',
+            'Average CPA $43, down 5%, good cost control'
+          ]
+        },
+        {
+          label: 'Insights & Recommendations',
+          insights: [
+            'Meta prospecting underperforming, ROAS only 2.1x, recommend optimizing targeting',
+            'Search non-branded and Influencers performing best, ROAS reaching 6.8x and 5.2x respectively',
+            'Need to focus on budget allocation across channels, optimize low-performing channel investment'
+          ]
+        },
+        {
+          label: 'Performance Summary',
+          insights: [
+            '6 channels exceeding expectations, representing 75% of total channels',
+            '2 channels need optimization, mainly Meta prospecting and Linear TV',
+            'Overall marketing effectiveness is good, recommend maintaining current strategy direction'
+          ]
+        },
+        {
+          label: 'Marketing Effectiveness Chart',
+          insights: [
+            'Visual comparison of marketing effectiveness across channels',
+            'Helps identify best and worst performing channels',
+            'Supports data-driven budget allocation decisions'
+          ]
+        },
+        {
+          label: 'Performance vs Spend Chart',
+          insights: [
+            'Shows relationship between channel performance and budget allocation',
+            'Identifies if budget allocation is reasonable, discovers optimization opportunities',
+            'Provides data support for budget reallocation'
+          ]
+        },
+        {
+          label: 'To-Do Items',
+          insights: [
+            'Optimize Meta prospecting campaign targeting, target ROAS improvement to 3.5x',
+            'Increase podcast ad budget by 15%, current performance is excellent',
+            'Review influencer collaboration ROI, ensure return on investment'
+          ]
+        },
+        {
+          label: 'Page Header',
+          insights: [
+            'Marketing Insights page overview',
+            'Analyze campaign performance and optimization opportunities',
+            'Provide data-driven marketing recommendations'
+          ]
+        }
+      ],
+      goals: [
+        {
+          label: 'Goals Overview',
+          insights: [
+            'Current ROAS target 4.2x, actual achievement 4.2x, target completion rate 100%',
+            'Monthly revenue target $600K, actual $588K, completion rate 98%',
+            'Customer acquisition target 1,200, actual 1,245, exceeded by 3.8%'
+          ]
+        },
+        {
+          label: 'Progress Tracking',
+          insights: [
+            'Q1 target completion rate 95%, Q2 completion rate 108%, Q3 completion rate 112%',
+            'Q4 target completion rate 87%, need to focus on year-end performance',
+            'Overall trend is positive, recommend maintaining current execution strategy'
+          ]
+        },
+        {
+          label: 'Goal Details',
+          insights: [
+            'Detailed goal setting information and breakdown metrics',
+            'Quarterly goal completion comparison analysis',
+            'Goal-related KPI monitoring and alerts'
+          ]
+        }
+      ],
+      forecaster: [
+        {
+          label: 'Forecast Chart',
+          insights: [
+            'Trend prediction based on historical data, accuracy reaching 92%',
+            'Future 3-month revenue forecast growth 8-12%',
+            'Seasonal pattern recognition, Q4 is peak sales season'
+          ]
+        },
+        {
+          label: 'Forecast Metrics',
+          insights: [
+            'Key forecast metrics display: revenue, conversion rate, CPA',
+            'Forecast accuracy assessment: historical forecast error <5%',
+            'Forecast model performance: machine learning algorithm optimization'
+          ]
+        },
+        {
+          label: 'Scenario Analysis',
+          insights: [
+            'Optimistic scenario: revenue growth 15%, ROAS improvement to 4.8x',
+            'Conservative scenario: revenue growth 5%, ROAS maintained at 4.2x',
+            'Risk factors: economic environment, increased competition, rising costs'
+          ]
+        }
+      ],
+      optimizer: [
+        {
+          label: 'Optimization Suggestions',
+          insights: [
+            'Recommend reducing Meta prospecting budget by 30%, reallocate',
+            'Increase Search non-branded budget by 25%, excellent performance',
+            'Optimize Influencers channel, improve ROAS to 6.0x'
+          ]
+        },
+        {
+          label: 'Budget Recommendations',
+          insights: [
+            'Smart budget allocation recommendations: reallocate based on ROAS performance',
+            'ROI optimization suggestions: focus on high ROAS channels',
+            'Cost control strategy: optimize low-performing channels, improve overall efficiency'
+          ]
+        },
+        {
+          label: 'Performance Metrics',
+          insights: [
+            'Key performance metrics monitoring: ROAS, CPA, conversion rate',
+            'Performance trend analysis: channel performance change trends',
+            'Optimization effectiveness evaluation: before and after optimization comparison'
+          ]
+        }
+      ],
+      reporter: [
+        {
+          label: 'Report Summary',
+          insights: [
+            'Key findings: 6 channels exceeding expectations',
+            'Important metrics overview: Total ROAS 4.2x, Total spend $140K',
+            'Trend analysis results: overall performance is positive, recommend maintaining strategy'
+          ]
+        },
+        {
+          label: 'Data Visualization',
+          insights: [
+            'Intuitive data chart display: channel performance comparison',
+            'Interactive data exploration: supports multi-dimensional analysis',
+            'Multi-dimensional data analysis: time, channel, target audience'
+          ]
+        },
+        {
+          label: 'Key Findings',
+          insights: [
+            'Important business insights: Meta prospecting needs optimization',
+            'Action recommendations: increase efficient channel budget, optimize inefficient channels',
+            'Risk alerts: monitor rising cost trends, control CPA'
+          ]
+        }
+      ],
+      refreshTracker: [
+        {
+          label: 'Refresh Status',
+          insights: [
+            'Data refresh status monitoring: real-time updates, delay <5 minutes',
+            'Last update time: 2024-01-15 14:30:00',
+            'Refresh frequency setting: auto-refresh every 15 minutes'
+          ]
+        },
+        {
+          label: 'Tracking Metrics',
+          insights: [
+            'Data quality metrics: completeness 99.8%, accuracy 99.5%',
+            'Refresh success rate: 99.9%, exceptions <0.1%',
+            'Performance monitoring metrics: response time <2 seconds, availability 99.9%'
+          ]
+        },
+        {
+          label: 'Update History',
+          insights: [
+            'Historical update records: no major exceptions in past 30 days',
+            'Update frequency analysis: average 15.2 minute intervals',
+            'Exception records: only 1 network delay, auto-recovered'
+          ]
+        }
+      ],
+      configure: [
+        {
+          label: 'Settings Panel',
+          insights: [
+            'System configuration options: data sources, refresh frequency, notification settings',
+            'User preference settings: interface theme, language, timezone',
+            'Personalization configuration: dashboard layout, KPI selection'
+          ]
+        },
+        {
+          label: 'Configuration Options',
+          insights: [
+            'Detailed configuration parameters: API keys, data permissions, integration settings',
+            'Advanced settings options: custom calculations, alert rules, export formats',
+            'Configuration validation and testing: connection testing, data validation, performance checks'
+          ]
+        },
+        {
+          label: 'System Status',
+          insights: [
+            'System operation status: normal, all services online',
+            'Connection status monitoring: stable data source connections',
+            'System health checks: good performance metrics, no exceptions'
+          ]
+        }
+      ]
+    };
+
+    const pageData = insightsData[currentPage] || insightsData.insights;
+    return pageData[index] || pageData[0];
+  };
+
+  // Get current focused component selector
+  const getCurrentFocusedSelector = () => {
+    if (highlightedElement === null) return null;
+    
+    const pageNames = ['insights', 'goals', 'forecaster', 'optimizer', 'reporter', 'refreshTracker', 'configure'];
+    const currentPage = pageNames[selectedTab];
+    
+    const selectors = {
+      insights: [
+        '.key-metrics-grid',
+        '.insights-section', 
+        '.performance-summary',
+        '.marketing-effectiveness-chart.chart-container',
+        '.performance-vs-spend-chart.chart-container',
+        '.todo-items',
+        '.header-section'
+      ],
+      goals: ['.goals-overview', '.progress-tracking', '.goal-details'],
+      forecaster: ['.forecast-chart', '.forecast-metrics', '.scenario-analysis'],
+      optimizer: ['.optimization-suggestions', '.budget-recommendations', '.performance-metrics'],
+      reporter: ['.report-summary', '.data-visualization', '.key-findings'],
+      refreshTracker: ['.refresh-status', '.tracking-metrics', '.update-history'],
+      configure: ['.settings-panel', '.configuration-options', '.system-status']
+    };
+    
+    const pageSelectors = selectors[currentPage] || selectors.insights;
+    return pageSelectors[highlightedElement];
+  };
+
+  // Apply focus mode CSS classes
+  useEffect(() => {
+    if (focusMode && highlightedElement !== null) {
+      const pageNames = ['insights', 'goals', 'forecaster', 'optimizer', 'reporter', 'refreshTracker', 'configure'];
+      const currentPage = pageNames[selectedTab];
+      
+      const selectors = {
+        insights: [
+          '.key-metrics-grid',
+          '.insights-section', 
+          '.performance-summary',
+          '.marketing-effectiveness-chart.chart-container',
+          '.performance-vs-spend-chart.chart-container',
+          '.todo-items',
+          '.header-section'
+        ],
+        goals: ['.goals-overview', '.progress-tracking', '.goal-details'],
+        forecaster: ['.forecast-chart', '.forecast-metrics', '.scenario-analysis'],
+        optimizer: ['.optimization-suggestions', '.budget-recommendations', '.performance-metrics'],
+        reporter: ['.report-summary', '.data-visualization', '.key-findings'],
+        refreshTracker: ['.refresh-status', '.tracking-metrics', '.update-history'],
+        configure: ['.settings-panel', '.configuration-options', '.system-status']
+      };
+      
+      const pageSelectors = selectors[currentPage] || selectors.insights;
+      
+      // Hide all components
+      pageSelectors.forEach((selector, index) => {
+        const element = document.querySelector(selector);
+        if (element) {
+          if (index === highlightedElement) {
+            // Show current focused component
+            element.style.filter = 'none';
+            element.style.opacity = '1';
+            element.style.pointerEvents = 'auto';
+            
+            // Auto-scroll to focused component
+            setTimeout(() => {
+              const mainContent = document.querySelector('main');
+              if (mainContent) {
+                const headerHeight = 80; // Fixed header height
+                const elementTop = element.offsetTop;
+                
+                // Scroll to element position, leave some top space
+                mainContent.scrollTo({
+                  top: elementTop - headerHeight - 20,
+                  behavior: 'smooth'
+                });
+              }
+            }, 100); // Short delay to ensure styles are applied
+          } else {
+            // Hide other components
+            element.style.filter = 'blur(8px)';
+            element.style.opacity = '0.3';
+            element.style.pointerEvents = 'none';
+          }
+        }
+      });
+    } else {
+      // Restore all components when exiting focus mode
+      const allSelectors = [
+        '.key-metrics-grid', '.insights-section', '.performance-summary',
+        '.marketing-effectiveness-chart.chart-container', '.performance-vs-spend-chart.chart-container',
+        '.todo-items', '.header-section', '.goals-overview', '.progress-tracking', '.goal-details',
+        '.forecast-chart', '.forecast-metrics', '.scenario-analysis',
+        '.optimization-suggestions', '.budget-recommendations', '.performance-metrics',
+        '.report-summary', '.data-visualization', '.key-findings',
+        '.refresh-status', '.tracking-metrics', '.update-history',
+        '.settings-panel', '.configuration-options', '.system-status'
+      ];
+      
+      allSelectors.forEach(selector => {
+        const element = document.querySelector(selector);
+        if (element) {
+          element.style.filter = 'none';
+          element.style.opacity = '1';
+          element.style.pointerEvents = 'auto';
+        }
+      });
+    }
+  }, [focusMode, highlightedElement, selectedTab]);
 
   const menuItems = [
     { 
@@ -166,6 +542,23 @@ function App() {
               
               <span className="text-sm text-gray-600">Cynthia@revosense.com</span>
               
+              {/* Focus Mode Button */}
+              <button
+                onClick={toggleFocusMode}
+                className={`inline-flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                  focusMode 
+                    ? 'bg-primary-100 text-primary-700 border border-primary-200 shadow-sm' 
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200 border border-gray-200'
+                }`}
+                title="Focus Mode - Highlight important data"
+              >
+                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                </svg>
+                {focusMode ? 'Exit Focus' : 'Focus Mode'}
+              </button>
+              
               <div className="relative">
                 <button
                   onClick={() => setUserMenuOpen(!userMenuOpen)}
@@ -196,8 +589,66 @@ function App() {
         </header>
 
         {/* Page Content */}
-        <main className="flex-1 overflow-auto">
-          {menuItems[selectedTab]?.component}
+        <main className="flex-1 overflow-auto relative">
+          {/* Focus Mode Overlay */}
+          {focusMode && (
+            <div className="fixed inset-0 z-50 pointer-events-none">
+              {/* Insights card - positioned on the right side of the page */}
+              {highlightedElement !== null && (
+                <div className="absolute pointer-events-auto z-20 top-20 right-4 max-w-sm">
+                  <div className="bg-white rounded-lg shadow-lg border border-gray-200 p-4">
+                    <h3 className="text-sm font-semibold text-gray-900 mb-2">
+                      {getHighlightInfo(highlightedElement).label}
+                    </h3>
+                    <div className="space-y-1">
+                      {getHighlightInfo(highlightedElement).insights.map((insight, index) => (
+                        <p key={index} className="text-xs text-gray-600 leading-relaxed">
+                          • {insight}
+                        </p>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
+              
+              {/* Control buttons - fixed in top-right corner */}
+              <div className="fixed top-4 right-4 z-[60] pointer-events-auto">
+                <button
+                  onClick={nextHighlight}
+                  className="bg-primary-600 hover:bg-primary-700 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200 flex items-center space-x-2 shadow-lg"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                  </svg>
+                  <span>{highlightedElement !== null ? 'Next Key Data' : 'Start Focus'}</span>
+                </button>
+                
+                <button
+                  onClick={toggleFocusMode}
+                  className="ml-2 bg-gray-600 hover:bg-gray-700 text-white font-medium py-2 px-3 rounded-lg transition-colors duration-200 shadow-lg"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+              
+              {/* Status indicator - fixed in bottom-left corner */}
+              {highlightedElement !== null && (
+                <div className="fixed bottom-4 left-4 bg-white rounded-lg shadow-lg border border-gray-200 px-3 py-2 z-[60] pointer-events-auto">
+                  <p className="text-sm text-gray-600">
+                    Current Focus: <span className="font-medium text-primary-600">Key Data #{highlightedElement + 1}</span>
+                  </p>
+                </div>
+              )}
+            </div>
+          )}
+          
+          {/* Original Content with Highlight Overlay */}
+          <div className={focusMode ? 'relative' : ''}>
+            {menuItems[selectedTab]?.component}
+          </div>
         </main>
       </div>
     </div>

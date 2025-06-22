@@ -940,7 +940,7 @@ const Insights = () => {
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8">
+        <div className="header-section flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8">
           <div>
             <h1 className="text-3xl font-bold text-gray-900 mb-2">Marketing Insights</h1>
             <p className="text-gray-600">Analyze campaign performance and optimization opportunities</p>
@@ -965,7 +965,7 @@ const Insights = () => {
         </div>
 
         {/* Key Metrics */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div className="key-metrics-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           {[
             { title: 'Total ROAS', value: '4.2x', change: '+12% from last week', positive: true },
             { title: 'Total Spend', value: '$140K', change: '+8% from last week', positive: true },
@@ -990,7 +990,7 @@ const Insights = () => {
         {/* Insights Section */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
           <div className="lg:col-span-2">
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <div className="insights-section bg-white rounded-xl shadow-sm border border-gray-200 p-6">
               <h3 className="text-lg font-semibold text-gray-900 mb-4">Key Insights & Recommendations</h3>
               
               <div className="space-y-3 mb-6">
@@ -1002,7 +1002,7 @@ const Insights = () => {
                 </div>
               </div>
 
-              <div className="space-y-3">
+              <div className="todo-items space-y-3">
                 {todoItems.map((item, index) => (
                   <div key={index} className="flex items-start space-x-3 p-3 rounded-lg hover:bg-gray-50 transition-colors duration-150">
                     <div className="flex-shrink-0 mt-0.5">
@@ -1032,7 +1032,7 @@ const Insights = () => {
             </div>
           </div>
           
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+          <div className="performance-summary bg-white rounded-xl shadow-sm border border-gray-200 p-6">
             <h3 className="text-lg font-semibold text-gray-900 mb-4">Performance Summary</h3>
             
             <div className="space-y-4 mb-6">
@@ -1070,7 +1070,7 @@ const Insights = () => {
 
         {/* Charts Section */}
         <div className="space-y-6">
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+          <div className="marketing-effectiveness-chart chart-container bg-white rounded-xl shadow-sm border border-gray-200 p-6">
             <div className="flex items-center justify-between mb-6">
               <div>
                 <h3 className="text-lg font-semibold text-gray-900 mb-1">Marketing Effectiveness by Channel</h3>
@@ -1089,7 +1089,7 @@ const Insights = () => {
             />
           </div>
           
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+          <div className="performance-vs-spend-chart chart-container bg-white rounded-xl shadow-sm border border-gray-200 p-6">
             <div className="flex items-center justify-between mb-6">
               <div>
                 <h3 className="text-lg font-semibold text-gray-900 mb-1">Performance vs Share of Spend</h3>

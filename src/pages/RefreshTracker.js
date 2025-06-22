@@ -205,24 +205,108 @@ const RefreshTracker = () => {
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8">
           <div>
             <h1 className="text-3xl font-bold text-gray-900 mb-2">Data Refresh Tracker</h1>
-            <p className="text-gray-600">Monitor data refresh status and schedule across all sources</p>
+            <p className="text-gray-600">Monitor data refresh status and track update history</p>
           </div>
           <div className="flex items-center space-x-4 mt-4 sm:mt-0">
-            <label className="flex items-center">
-              <input
-                type="checkbox"
-                checked={autoRefresh}
-                onChange={(e) => setAutoRefresh(e.target.checked)}
-                className="rounded border-gray-300 text-primary-600 focus:ring-primary-500 focus:ring-offset-0"
-              />
-              <span className="ml-2 text-sm text-gray-700">Auto Refresh</span>
-            </label>
-            <button className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors duration-200">
+            <button className="inline-flex items-center px-4 py-2 bg-primary-600 text-white text-sm font-medium rounded-lg hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors duration-200">
               <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
               </svg>
-              Refresh All
+              Refresh Now
             </button>
+          </div>
+        </div>
+
+        {/* Refresh Status Section */}
+        <div className="refresh-status bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-8">
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-1">Refresh Status</h3>
+              <p className="text-sm text-gray-600">Current data refresh status and last update time</p>
+            </div>
+            <div className="flex items-center space-x-2">
+              <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+              <span className="text-sm text-gray-600">Live</span>
+            </div>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="text-center">
+              <div className="text-2xl font-bold text-gray-900 mb-1">2 min ago</div>
+              <div className="text-sm text-gray-600">Last Update</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-gray-900 mb-1">15 min</div>
+              <div className="text-sm text-gray-600">Refresh Interval</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-green-600 mb-1">99.9%</div>
+              <div className="text-sm text-gray-600">Success Rate</div>
+            </div>
+          </div>
+        </div>
+
+        {/* Tracking Metrics Section */}
+        <div className="tracking-metrics bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-8">
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-1">Tracking Metrics</h3>
+              <p className="text-sm text-gray-600">Data quality and performance metrics</p>
+            </div>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <div className="text-center">
+              <div className="text-2xl font-bold text-gray-900 mb-1">99.8%</div>
+              <div className="text-sm text-gray-600">Data Completeness</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-gray-900 mb-1">99.5%</div>
+              <div className="text-sm text-gray-600">Data Accuracy</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-gray-900 mb-1">&lt;2s</div>
+              <div className="text-sm text-gray-600">Response Time</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-gray-900 mb-1">99.9%</div>
+              <div className="text-sm text-gray-600">Uptime</div>
+            </div>
+          </div>
+        </div>
+
+        {/* Update History Section */}
+        <div className="update-history bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">Update History</h3>
+          <div className="space-y-4">
+            <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+              <div className="flex items-center space-x-3">
+                <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                <div>
+                  <p className="text-sm font-medium text-gray-900">Data refresh completed successfully</p>
+                  <p className="text-sm text-gray-600">2024-01-15 14:30:00</p>
+                </div>
+              </div>
+              <span className="text-xs text-gray-500">2 min ago</span>
+            </div>
+            <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+              <div className="flex items-center space-x-3">
+                <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                <div>
+                  <p className="text-sm font-medium text-gray-900">Data refresh completed successfully</p>
+                  <p className="text-sm text-gray-600">2024-01-15 14:15:00</p>
+                </div>
+              </div>
+              <span className="text-xs text-gray-500">17 min ago</span>
+            </div>
+            <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+              <div className="flex items-center space-x-3">
+                <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                <div>
+                  <p className="text-sm font-medium text-gray-900">Data refresh completed successfully</p>
+                  <p className="text-sm text-gray-600">2024-01-15 14:00:00</p>
+                </div>
+              </div>
+              <span className="text-xs text-gray-500">32 min ago</span>
+            </div>
           </div>
         </div>
 

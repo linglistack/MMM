@@ -222,17 +222,21 @@ const Optimizer = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      {/* Header */}
+        {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8">
           <div>
             <h1 className="text-3xl font-bold text-gray-900 mb-2">Budget Optimizer</h1>
-            <p className="text-gray-600">Optimize your marketing spend allocation to maximize ROI and achieve business objectives</p>
+            <p className="text-gray-600">Optimize your marketing budget allocation for maximum ROI</p>
           </div>
           <div className="flex items-center space-x-4 mt-4 sm:mt-0">
+            <div className="text-right">
+              <div className="text-2xl font-bold text-primary-600">${totalBudget}K</div>
+              <div className="text-sm text-gray-500">Total Budget</div>
+            </div>
             <button
               onClick={runOptimization}
               disabled={optimizationRunning}
-              className="inline-flex items-center px-6 py-3 border border-transparent text-sm font-medium rounded-lg text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors duration-200 disabled:opacity-50"
+              className="inline-flex items-center px-4 py-2 bg-primary-600 text-white text-sm font-medium rounded-lg hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {optimizationRunning ? (
                 <>
@@ -254,208 +258,98 @@ const Optimizer = () => {
           </div>
         </div>
 
-        {/* Optimization Controls */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-8">
+        {/* Optimization Suggestions Section */}
+        <div className="optimization-suggestions bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-8">
           <div className="flex items-center justify-between mb-6">
             <div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-1">Optimization Parameters</h3>
-              <p className="text-sm text-gray-600">Configure budget constraints and optimization goals</p>
+              <h3 className="text-lg font-semibold text-gray-900 mb-1">Optimization Suggestions</h3>
+              <p className="text-sm text-gray-600">AI-powered recommendations for budget reallocation</p>
             </div>
-            <div className="text-right">
-              <div className="text-2xl font-bold text-primary-600">${totalBudget}k</div>
-              <div className="text-sm text-gray-500">Total Budget</div>
-            </div>
-          </div>
-
-          <div className="space-y-6">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Total Budget: ${totalBudget}k
-              </label>
-              <input
-                type="range"
-                min="100"
-                max="500"
-                step="10"
-                    value={totalBudget}
-                onChange={(e) => setTotalBudget(parseInt(e.target.value))}
-                className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
-                style={{
-                  background: `linear-gradient(to right, #0ea5e9 0%, #0ea5e9 ${((totalBudget - 100) / 400) * 100}%, #e5e7eb ${((totalBudget - 100) / 400) * 100}%, #e5e7eb 100%)`
-                }}
-              />
-              <div className="flex justify-between text-xs text-gray-500 mt-1">
-                <span>$100k</span>
-                <span>$300k</span>
-                <span>$500k</span>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4 border-t border-gray-200">
-              <div className="text-center">
-                <div className="text-2xl font-bold text-gray-900 mb-1">3.32x</div>
-                <div className="text-sm text-gray-600">Predicted ROI</div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-gray-900 mb-1">+18%</div>
-                <div className="text-sm text-gray-600">ROI Improvement</div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-gray-900 mb-1">$697k</div>
-                <div className="text-sm text-gray-600">Total Revenue</div>
-              </div>
+            <div className="flex items-center space-x-2">
+              <div className="w-3 h-3 bg-primary-600 rounded-full"></div>
+              <span className="text-sm text-gray-600">Optimized</span>
+              <div className="w-3 h-3 bg-gray-500 rounded-full ml-4"></div>
+              <span className="text-sm text-gray-600">Current</span>
             </div>
           </div>
+          <HighchartsReact
+            highcharts={Highcharts}
+            options={allocationComparisonOptions}
+          />
         </div>
 
-        {/* Optimization Results Alert */}
-        {optimizationRunning && (
-          <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-8">
-            <div className="flex items-center">
-              <svg className="animate-spin h-5 w-5 text-blue-600 mr-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-              </svg>
-              <div>
-                <p className="text-sm font-medium text-blue-800">Optimization in Progress</p>
-                <p className="text-sm text-blue-700">Analyzing budget allocation scenarios and calculating optimal distribution...</p>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Allocation Table */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 mb-8">
-          <div className="px-6 py-4 border-b border-gray-200">
-            <div className="flex items-center justify-between">
-              <div>
-                <h3 className="text-lg font-semibold text-gray-900">Channel Allocation Comparison</h3>
-                <p className="text-sm text-gray-600 mt-1">Current vs optimized budget allocation across marketing channels</p>
-              </div>
-              <button className="inline-flex items-center px-3 py-1.5 border border-gray-300 text-sm font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors duration-200">
-                <svg className="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                </svg>
-                Export
-              </button>
-            </div>
-          </div>
-
-          <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
-                <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Channel</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Current Budget</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Optimized Budget</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Change</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Current ROI</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Optimized ROI</th>
-                </tr>
-              </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
-                {allocationData.map((row, index) => {
-                  const change = row.optimized - row.current;
-                  const changePercent = ((change / row.current) * 100).toFixed(1);
-                      return (
-                    <tr key={index} className="hover:bg-gray-50 transition-colors duration-150">
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm font-medium text-gray-900">{row.channel}</div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm text-gray-900">${row.current}k</div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm font-medium text-gray-900">${row.optimized}k</div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                          change > 0 ? 'bg-primary-100 text-primary-800' :
-                          change < 0 ? 'bg-gray-100 text-gray-800' : 'bg-gray-100 text-gray-800'
-                        }`}>
-                          {change > 0 ? '+' : ''}{change}k ({changePercent}%)
-                        </div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm text-gray-900">{row.currentRoi}x</div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm font-medium text-gray-900">{row.optimizedRoi}x</div>
-                      </td>
-                    </tr>
-                      );
-                    })}
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        {/* Charts Section */}
-        <div className="space-y-6">
+        {/* Budget Recommendations Section */}
+        <div className="budget-recommendations grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
           <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-            <div className="flex items-center justify-between mb-6">
-              <div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-1">ROI Curves by Channel</h3>
-                <p className="text-sm text-gray-600">Marginal return on investment curves showing diminishing returns</p>
-              </div>
-              <button className="inline-flex items-center px-3 py-1.5 border border-gray-300 text-sm font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors duration-200">
-                <svg className="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                </svg>
-                Export
-              </button>
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">Budget Recommendations</h3>
+            <div className="space-y-4">
+              {allocationData.map((item, index) => (
+                <div key={index} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                  <div className="flex-1">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-sm font-medium text-gray-900">{item.channel}</span>
+                      <div className="flex items-center space-x-2">
+                        <span className="text-xs text-gray-500">${item.current}K</span>
+                        <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                        </svg>
+                        <span className="text-xs font-medium text-primary-600">${item.optimized}K</span>
+                      </div>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-2">
+                        <span className="text-xs text-gray-500">ROI:</span>
+                        <span className="text-xs text-gray-600">{item.currentRoi}x</span>
+                        <svg className="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                        </svg>
+                        <span className="text-xs font-medium text-primary-600">{item.optimizedRoi}x</span>
+                      </div>
+                      <div className={`text-xs font-medium px-2 py-1 rounded-full ${
+                        item.optimized > item.current 
+                          ? 'bg-green-100 text-green-800' 
+                          : item.optimized < item.current 
+                          ? 'bg-red-100 text-red-800'
+                          : 'bg-gray-100 text-gray-800'
+                      }`}>
+                        {item.optimized > item.current ? '+' : ''}{item.optimized - item.current}K
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
-              <HighchartsReact
-                highcharts={Highcharts}
-                options={roiCurveOptions}
-              />
           </div>
 
           <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-            <div className="flex items-center justify-between mb-6">
-              <div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-1">Budget Allocation Comparison</h3>
-                <p className="text-sm text-gray-600">Current vs optimized budget distribution across all channels</p>
-              </div>
-              <button className="inline-flex items-center px-3 py-1.5 border border-gray-300 text-sm font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors duration-200">
-                <svg className="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                </svg>
-                Export
-              </button>
-            </div>
-              <HighchartsReact
-                highcharts={Highcharts}
-              options={allocationComparisonOptions}
-              />
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">ROI Curves</h3>
+            <p className="text-sm text-gray-600 mb-4">Marginal ROI by budget allocation for top channels</p>
+            <HighchartsReact
+              highcharts={Highcharts}
+              options={roiCurveOptions}
+            />
           </div>
         </div>
 
-        {/* Optimization Insights */}
-        <div className="mt-8 bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Optimization Insights</h3>
-          
-          <div className="space-y-4">
-            <div className="flex items-start space-x-3">
-              <div className="flex-shrink-0 w-2 h-2 bg-primary-600 rounded-full mt-2"></div>
-              <div>
-                <p className="text-sm font-medium text-gray-900">Search Non-Branded shows highest potential</p>
-                <p className="text-sm text-gray-600">Increase allocation by $7k to capture additional high-ROI opportunities</p>
-              </div>
+        {/* Performance Metrics Section */}
+        <div className="performance-metrics bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">Performance Metrics</h3>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <div className="text-center">
+              <div className="text-2xl font-bold text-gray-900 mb-1">$2.1M</div>
+              <div className="text-sm text-gray-600">Current Revenue</div>
             </div>
-            <div className="flex items-start space-x-3">
-              <div className="flex-shrink-0 w-2 h-2 bg-primary-600 rounded-full mt-2"></div>
-              <div>
-                <p className="text-sm font-medium text-gray-900">Meta Prospecting is underperforming</p>
-                <p className="text-sm text-gray-600">Reduce budget by $5k and reallocate to higher-performing channels</p>
-              </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-primary-600 mb-1">$2.4M</div>
+              <div className="text-sm text-gray-600">Optimized Revenue</div>
             </div>
-            <div className="flex items-start space-x-3">
-              <div className="flex-shrink-0 w-2 h-2 bg-primary-600 rounded-full mt-2"></div>
-              <div>
-                <p className="text-sm font-medium text-gray-900">Overall ROI improvement of 18%</p>
-                <p className="text-sm text-gray-600">Expected total revenue increase of $126k with optimized allocation</p>
-              </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-gray-900 mb-1">3.2x</div>
+              <div className="text-sm text-gray-600">Current ROAS</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-primary-600 mb-1">3.8x</div>
+              <div className="text-sm text-gray-600">Optimized ROAS</div>
             </div>
           </div>
         </div>

@@ -146,13 +146,28 @@ const AudioNarrator = ({ insights, isHeaderButton }) => {
       highlightSection(section.id);
 
       const utterance = new SpeechSynthesisUtterance(section.text);
-      utterance.rate = 1.1;
-      utterance.pitch = 1;
+      
+      // Get available voices and select the best one
+      const voices = window.speechSynthesis.getVoices();
+      const preferredVoice = voices.find(voice => 
+        // Prefer high-quality voices in this order: Samantha, Alex, Karen, or any en-US voice
+        ['Samantha', 'Alex', 'Karen'].includes(voice.name) || 
+        (voice.lang === 'en-US' && voice.localService)
+      ) || voices.find(voice => voice.lang.startsWith('en-')) || voices[0];
+      
+      // Configure voice parameters for more natural speech
+      utterance.voice = preferredVoice;
+      utterance.rate = 0.9;  // Slightly slower for better clarity
+      utterance.pitch = 1.1; // Slightly higher pitch for engagement
+      utterance.volume = 1.0;
+      
+      // Add slight pauses at punctuation for more natural rhythm
+      utterance.text = section.text.replace(/([.,!?])/g, '$1 ');
 
       utterance.onend = () => {
         currentIndex++;
         if (currentIndex < narrationSections.length) {
-          setTimeout(speakSection, 500); // 0.5s pause between sections
+          setTimeout(speakSection, 800); // Longer pause between sections for better pacing
         } else {
           setTimeout(cleanup, 1000);
         }
@@ -161,11 +176,23 @@ const AudioNarrator = ({ insights, isHeaderButton }) => {
       window.speechSynthesis.speak(utterance);
     };
 
-    try {
-      speakSection();
-    } catch (error) {
-      console.error('Speech synthesis error:', error);
-      cleanup();
+    // Wait for voices to load if they haven't already
+    if (window.speechSynthesis.getVoices().length === 0) {
+      window.speechSynthesis.onvoiceschanged = () => {
+        try {
+          speakSection();
+        } catch (error) {
+          console.error('Speech synthesis error:', error);
+          cleanup();
+        }
+      };
+    } else {
+      try {
+        speakSection();
+      } catch (error) {
+        console.error('Speech synthesis error:', error);
+        cleanup();
+      }
     }
   };
 

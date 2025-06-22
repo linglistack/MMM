@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
+import AudioNarrator from '../components/AudioNarrator';
 
 const Insights = () => {
   const [showAdvanced, setShowAdvanced] = useState(false);
@@ -777,6 +778,15 @@ const Insights = () => {
   };
 
   // Modern Performance Chart - Single Color Theme
+  const performanceData = [
+    { category: 'Search Non-Branded', y: 8.2, spend: 25 },
+    { category: 'Meta Retargeting', y: 6.5, spend: 20 },
+    { category: 'Influencers', y: 4.8, spend: 15 },
+    { category: 'Podcast', y: -2.3, spend: 30 },
+    { category: 'Linear TV', y: -5.1, spend: 35 },
+    { category: 'Mailers', y: -3.7, spend: 15 }
+  ];
+
   const performanceByChannelOptions = {
     chart: {
       type: 'bar',
@@ -788,25 +798,10 @@ const Insights = () => {
     },
     title: { text: null },
     xAxis: {
-      categories: [
-        'Search Non-Branded',
-        'Influencers', 
-        'Podcast',
-        'Meta Retargeting',
-        'Linear TV',
-        'Mailers',
-        'Search Branded',
-        'Meta Prospecting'
-      ],
-      labels: { 
-        style: { 
-          fontSize: '12px',
-          fontWeight: '500',
-          color: '#6b7280'
-        }
-      },
-      lineWidth: 0,
-      tickWidth: 0
+      categories: performanceData.map(item => item.category),
+      title: {
+        text: null
+      }
     },
     yAxis: {
       title: { 
@@ -853,16 +848,11 @@ const Insights = () => {
     },
     series: [{
       name: 'Performance',
-      data: [
-        { y: 7.6, color: y => y >= 0 ? '#0ea5e9' : '#6b7280' },
-        { y: 7.4, color: '#0ea5e9' },
-        { y: 5.7, color: '#0ea5e9' },
-        { y: 2.9, color: '#0ea5e9' },
-        { y: 1.4, color: '#0ea5e9' },
-        { y: 0.5, color: '#0ea5e9' },
-        { y: -0.2, color: '#6b7280' },
-        { y: -25.4, color: '#6b7280' }
-      ]
+      data: performanceData.map(item => ({
+        y: item.y,
+        color: item.y >= 0 ? '#0ea5e9' : '#6b7280'
+      })),
+      type: 'bar'
     }],
     credits: { enabled: false },
     legend: { enabled: false },
@@ -936,29 +926,35 @@ const Insights = () => {
     { text: 'Review influencer partnership ROI', priority: 'medium', completed: true }
   ];
 
+  const insightsData = {
+    metrics: [
+      { title: 'Total ROAS', value: '4.2x', change: '+12% from last week', positive: true },
+      { title: 'CAC', value: '$42.50', change: '-8% from last week', positive: true },
+      { title: 'Conversion Rate', value: '3.8%', change: '+5% from last week', positive: true },
+      { title: 'Total Spend', value: '$125,400', change: '+15% from last week', positive: false }
+    ],
+    todoItems: todoItems,
+    channelPerformance: performanceData.map(channel => ({
+      name: channel.category,
+      performance: channel.y,
+      spendShare: ((channel.spend || 0) / 140 * 100).toFixed(1)
+    }))
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="content-wrapper max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="header-section flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8">
           <div>
             <h1 className="text-3xl font-bold text-gray-900 mb-2">Marketing Insights</h1>
-            <p className="text-gray-600">Analyze campaign performance and optimization opportunities</p>
+            <p className="text-gray-600">Track and optimize your marketing performance across channels</p>
           </div>
-          <div className="flex items-center space-x-4 mt-4 sm:mt-0">
-            <label className="flex items-center">
-              <input
-                type="checkbox"
-                checked={showAdvanced}
-                onChange={(e) => setShowAdvanced(e.target.checked)}
-                className="rounded border-gray-300 text-primary-600 focus:ring-primary-500 focus:ring-offset-0"
-              />
-              <span className="ml-2 text-sm text-gray-700">Advanced View</span>
-            </label>
-            <button className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors duration-200">
-              <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-              </svg>
+          <div className="flex items-center space-x-3 mt-4 sm:mt-0">
+            <AudioNarrator insights={insightsData} isHeaderButton={true} />
+            <button
+              className="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            >
               Export Report
             </button>
           </div>

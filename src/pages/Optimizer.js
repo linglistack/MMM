@@ -257,6 +257,28 @@ const Optimizer = () => {
             </button>
           </div>
         </div>
+                {/* Performance Metrics Section */}
+                <div className="performance-metrics bg-white rounded-xl mb-6 shadow-sm border border-gray-200 p-6">
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">Performance Metrics</h3>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <div className="text-center">
+              <div className="text-2xl font-bold text-gray-900 mb-1">$2.1M</div>
+              <div className="text-sm text-gray-600">Current Revenue</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-primary-600 mb-1">$2.4M</div>
+              <div className="text-sm text-gray-600">Optimized Revenue</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-gray-900 mb-1">3.2x</div>
+              <div className="text-sm text-gray-600">Current ROAS</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-primary-600 mb-1">3.8x</div>
+              <div className="text-sm text-gray-600">Optimized ROAS</div>
+            </div>
+          </div>
+        </div>
 
         {/* Optimization Suggestions Section */}
         <div className="optimization-suggestions bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-8">
@@ -328,29 +350,6 @@ const Optimizer = () => {
               highcharts={Highcharts}
               options={roiCurveOptions}
             />
-          </div>
-        </div>
-
-        {/* Performance Metrics Section */}
-        <div className="performance-metrics bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Performance Metrics</h3>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-            <div className="text-center">
-              <div className="text-2xl font-bold text-gray-900 mb-1">$2.1M</div>
-              <div className="text-sm text-gray-600">Current Revenue</div>
-            </div>
-            <div className="text-center">
-              <div className="text-2xl font-bold text-primary-600 mb-1">$2.4M</div>
-              <div className="text-sm text-gray-600">Optimized Revenue</div>
-            </div>
-            <div className="text-center">
-              <div className="text-2xl font-bold text-gray-900 mb-1">3.2x</div>
-              <div className="text-sm text-gray-600">Current ROAS</div>
-            </div>
-            <div className="text-center">
-              <div className="text-2xl font-bold text-primary-600 mb-1">3.8x</div>
-              <div className="text-sm text-gray-600">Optimized ROAS</div>
-            </div>
           </div>
         </div>
       </div>

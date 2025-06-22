@@ -18,3 +18,78 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+/* Focus Mode Styles */
+.content-wrapper {
+  position: relative;
+}
+
+.blur-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  z-index: 40;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.blur-overlay.active {
+  display: block;
+}
+
+.focus-mode {
+  position: relative;
+  z-index: 45;
+  transition: all 0.3s ease-in-out;
+  background: white;
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+  margin: 20px 0;
+}
+
+.focus-mode::before {
+  content: '';
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  right: -10px;
+  bottom: -10px;
+  border-radius: inherit;
+  background: white;
+  z-index: -1;
+}
+
+.narrator-controls {
+  position: absolute;
+  right: -200px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 50;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+}
+
+/* Ensure controls are visible on smaller screens */
+@media (max-width: 1400px) {
+  .narrator-controls {
+    right: 16px;
+    top: -40px;
+  }
+}
+
+/* Smooth Scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Animation for section transitions */
+.section-transition {
+  transition: all 0.3s ease-in-out;
+}

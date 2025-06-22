@@ -5,6 +5,581 @@ import HighchartsReact from 'highcharts-react-official';
 const Insights = () => {
   const [showAdvanced, setShowAdvanced] = useState(false);
 
+  // Helper function to generate insights and recommendations
+  const generateChannelInsights = (channel, performance, spend) => {
+    const getPerformanceLevel = (perf) => {
+      if (perf >= 5) return 'exceptional';
+      if (perf >= 2) return 'good';
+      if (perf >= 0) return 'moderate';
+      if (perf >= -5) return 'concerning';
+      return 'critical';
+    };
+
+    const getSpendShare = (channelSpend) => {
+      const totalSpend = 140; // Sum of all channel spends
+      return (channelSpend / totalSpend) * 100;
+    };
+
+    const insights = {
+      'Search Non-Branded': {
+        exceptional: {
+          insight: `Overperforming by ${performance.toFixed(1)}% with ${getSpendShare(spend).toFixed(1)}% share of total spend`,
+          todo: `Increase daily budget by 25% and expand to 3-4 new keyword clusters with similar performance patterns`
+        },
+        good: {
+          insight: `Strong performance at +${performance.toFixed(1)}% with ${getSpendShare(spend).toFixed(1)}% spend share`,
+          todo: `Test expanding match types on top 10 converting keywords and increase bids by 15%`
+        },
+        moderate: {
+          insight: `Stable performance at +${performance.toFixed(1)}% with ${getSpendShare(spend).toFixed(1)}% of budget`,
+          todo: `Optimize bids on keywords with quality score >7 and maintain current position`
+        },
+        concerning: {
+          insight: `Underperforming at ${performance.toFixed(1)}% with ${getSpendShare(spend).toFixed(1)}% spend share`,
+          todo: `Reduce bids by 20% on keywords with CPA >130% of target and quality score <6`
+        },
+        critical: {
+          insight: `Critical performance at ${performance.toFixed(1)}% while using ${getSpendShare(spend).toFixed(1)}% of budget`,
+          todo: `Pause keywords with zero conversions in past 30 days and reduce budget by 50%`
+        }
+      },
+      'Meta Retargeting': {
+        exceptional: {
+          insight: `Leading channel at +${performance.toFixed(1)}% with ${getSpendShare(spend).toFixed(1)}% budget allocation`,
+          todo: `Increase frequency caps by 50% for audiences with >3% CTR and expand lookalikes`
+        },
+        good: {
+          insight: `Strong results at +${performance.toFixed(1)}% using ${getSpendShare(spend).toFixed(1)}% of spend`,
+          todo: `Create new lookalike audiences from top 5% converters and increase budget 25%`
+        },
+        moderate: {
+          insight: `Steady performance at +${performance.toFixed(1)}% with ${getSpendShare(spend).toFixed(1)}% share`,
+          todo: `Optimize audience targeting for segments with >2% conversion rate`
+        },
+        concerning: {
+          insight: `Below target at ${performance.toFixed(1)}% with ${getSpendShare(spend).toFixed(1)}% spend share`,
+          todo: `Reduce frequency on audiences with CTR <0.8% and refresh creative`
+        },
+        critical: {
+          insight: `Significant issues at ${performance.toFixed(1)}% using ${getSpendShare(spend).toFixed(1)}% of budget`,
+          todo: `Pause bottom 30% of audiences by conversion rate and reduce spend by 60%`
+        }
+      },
+      'Influencers': {
+        exceptional: {
+          insight: `Top performing at +${performance.toFixed(1)}% with ${getSpendShare(spend).toFixed(1)}% of total spend`,
+          todo: `Increase investment by 30% in creators with engagement rate >5%`
+        },
+        good: {
+          insight: `Strong creator ROI at +${performance.toFixed(1)}% using ${getSpendShare(spend).toFixed(1)}% budget`,
+          todo: `Expand partnerships with creators showing >3% conversion rate`
+        },
+        moderate: {
+          insight: `Stable performance at +${performance.toFixed(1)}% with ${getSpendShare(spend).toFixed(1)}% share`,
+          todo: `Optimize content mix for creators with >2% engagement rate`
+        },
+        concerning: {
+          insight: `Underdelivering at ${performance.toFixed(1)}% with ${getSpendShare(spend).toFixed(1)}% allocation`,
+          todo: `Review creators with <1% conversion rate and reduce their budgets by 40%`
+        },
+        critical: {
+          insight: `Critical performance at ${performance.toFixed(1)}% using ${getSpendShare(spend).toFixed(1)}% of spend`,
+          todo: `Pause creators with negative ROI and rebuild selection criteria`
+        }
+      },
+      'Podcast': {
+        exceptional: {
+          insight: `Outstanding at +${performance.toFixed(1)}% with ${getSpendShare(spend).toFixed(1)}% spend share`,
+          todo: `Lock in premium slots on shows with >2x average conversion rate`
+        },
+        good: {
+          insight: `Strong show performance at +${performance.toFixed(1)}% using ${getSpendShare(spend).toFixed(1)}%`,
+          todo: `Increase investment by 20% in shows with >4% engagement rate`
+        },
+        moderate: {
+          insight: `Steady results at +${performance.toFixed(1)}% with ${getSpendShare(spend).toFixed(1)}% of budget`,
+          todo: `Maintain current mix and test new ad placements in top shows`
+        },
+        concerning: {
+          insight: `Below target at ${performance.toFixed(1)}% with ${getSpendShare(spend).toFixed(1)}% allocation`,
+          todo: `Cut bottom 20% of shows by ROI and reallocate to top performers`
+        },
+        critical: {
+          insight: `Severe underperformance at ${performance.toFixed(1)}% using ${getSpendShare(spend).toFixed(1)}%`,
+          todo: `Pause shows with negative ROI and reduce overall spend by 50%`
+        }
+      },
+      'Linear TV': {
+        exceptional: {
+          insight: `Exceptional TV ROI at +${performance.toFixed(1)}% with ${getSpendShare(spend).toFixed(1)}% share`,
+          todo: `Increase primetime slots by 30% and expand to similar programming`
+        },
+        good: {
+          insight: `Strong TV metrics at +${performance.toFixed(1)}% using ${getSpendShare(spend).toFixed(1)}% budget`,
+          todo: `Boost investment in dayparts with >1.5x average response rate`
+        },
+        moderate: {
+          insight: `Stable TV performance at +${performance.toFixed(1)}% with ${getSpendShare(spend).toFixed(1)}%`,
+          todo: `Optimize current daypart mix based on response rate data`
+        },
+        concerning: {
+          insight: `Underperforming at ${performance.toFixed(1)}% with ${getSpendShare(spend).toFixed(1)}% share`,
+          todo: `Cut bottom 25% of timeslots and shift to better performing dayparts`
+        },
+        critical: {
+          insight: `Critical TV metrics at ${performance.toFixed(1)}% using ${getSpendShare(spend).toFixed(1)}%`,
+          todo: `Reduce TV spend by 60% and focus only on proven timeslots`
+        }
+      },
+      'Mailers': {
+        exceptional: {
+          insight: `Top mailer ROI at +${performance.toFixed(1)}% with ${getSpendShare(spend).toFixed(1)}% allocation`,
+          todo: `Increase circulation by 40% for segments with >3% response rate`
+        },
+        good: {
+          insight: `Strong mail metrics at +${performance.toFixed(1)}% using ${getSpendShare(spend).toFixed(1)}%`,
+          todo: `Expand to similar segments with expected >2% response rate`
+        },
+        moderate: {
+          insight: `Steady mail performance at +${performance.toFixed(1)}% with ${getSpendShare(spend).toFixed(1)}%`,
+          todo: `Test new creative variants with current top segments`
+        },
+        concerning: {
+          insight: `Below target at ${performance.toFixed(1)}% with ${getSpendShare(spend).toFixed(1)}% share`,
+          todo: `Reduce circulation by 30% for segments with <1% response rate`
+        },
+        critical: {
+          insight: `Poor mail performance at ${performance.toFixed(1)}% using ${getSpendShare(spend).toFixed(1)}%`,
+          todo: `Stop circulation to bottom 50% segments and rebuild lists`
+        }
+      }
+    };
+
+    const defaultInsights = {
+      exceptional: {
+        insight: `Outstanding ROI at +${performance.toFixed(1)}% with ${getSpendShare(spend).toFixed(1)}% of total spend`,
+        todo: `Increase investment by 30% and expand to similar opportunities`
+      },
+      good: {
+        insight: `Strong performance at +${performance.toFixed(1)}% using ${getSpendShare(spend).toFixed(1)}% of budget`,
+        todo: `Scale up gradually with 20% budget increase in top segments`
+      },
+      moderate: {
+        insight: `Stable results at +${performance.toFixed(1)}% with ${getSpendShare(spend).toFixed(1)}% allocation`,
+        todo: `Maintain current approach and test incremental improvements`
+      },
+      concerning: {
+        insight: `Underperforming at ${performance.toFixed(1)}% with ${getSpendShare(spend).toFixed(1)}% share`,
+        todo: `Reduce spend by 25% and optimize targeting criteria`
+      },
+      critical: {
+        insight: `Critical performance at ${performance.toFixed(1)}% using ${getSpendShare(spend).toFixed(1)}%`,
+        todo: `Cut budget by 50% and reevaluate channel strategy`
+      }
+    };
+
+    const performanceLevel = getPerformanceLevel(performance);
+    const channelInsight = insights[channel] || defaultInsights;
+    
+    console.log('Performance Insight Selected:', {
+      channel,
+      performance,
+      performanceLevel,
+      spendShare: getSpendShare(spend).toFixed(1) + '%',
+      isDefault: !insights[channel]
+    });
+    
+    return channelInsight[performanceLevel];
+  };
+
+  const generateMarketingEffectivenessInsights = (channel, spend, mCPA, CPA) => {
+    const getEfficiencyLevel = (cpa, mcpa) => {
+      const difference = ((mcpa - cpa) / mcpa) * 100;
+      if (difference >= 15) return 'highly_efficient';
+      if (difference >= 5) return 'efficient';
+      if (difference >= -5) return 'neutral';
+      if (difference >= -15) return 'inefficient';
+      return 'highly_inefficient';
+    };
+
+    const getSpendLevel = (channelSpend) => {
+      // Assuming total spend is the sum of all channel spends
+      const totalSpend = 140; // Sum of [27, 10, 45, 32, 18, 8]
+      const spendShare = (channelSpend / totalSpend) * 100;
+      
+      if (spendShare >= 25) return 'very_high';
+      if (spendShare >= 15) return 'high';
+      if (spendShare >= 10) return 'medium';
+      if (spendShare >= 5) return 'low';
+      return 'very_low';
+    };
+
+    const efficiencyLevel = getEfficiencyLevel(CPA, mCPA);
+    const spendLevel = getSpendLevel(spend);
+    
+    console.log('Debug Info:', {
+      channel,
+      spend,
+      mCPA,
+      CPA,
+      efficiencyLevel,
+      spendLevel
+    });
+
+    const insights = {
+      'Search Non-Branded': {
+        highly_efficient: {
+          very_high: {
+            insight: `CPA $${CPA} is ${Math.round(((mCPA - CPA) / mCPA) * 100)}% below target $${mCPA} with high spend of $${spend}k`,
+            todo: `Increase daily budget by 20% and expand to 3-4 new keyword clusters with similar intent patterns`
+          },
+          high: {
+            insight: `Strong ROI with CPA $${CPA} vs target $${mCPA} and good scale at $${spend}k spend`,
+            todo: `Test expanding match types on top 10 converting keywords and increase bids by 15%`
+          },
+          medium: {
+            insight: `Excellent CPA efficiency of $${CPA} vs $${mCPA} target at moderate spend`,
+            todo: `Add 20-30 new keywords based on top converter search term report analysis`
+          },
+          low: {
+            insight: `CPA outperforming at $${CPA} vs $${mCPA} target despite low $${spend}k spend`,
+            todo: `Increase bids 10% on keywords with conversion rate >3% and quality score >7`
+          },
+          very_low: {
+            insight: `Strong initial performance with $${CPA} CPA vs $${mCPA} target`,
+            todo: `Double daily budget on ad groups with CTR >5% and average position better than 2.5`
+          }
+        },
+        efficient: {
+          very_high: {
+            insight: `Good efficiency with $${CPA} CPA at high $${spend}k spend level`,
+            todo: `Review search terms for new negative keywords and optimize ad copy with >4% CTR`
+          },
+          high: {
+            insight: `Solid CPA of $${CPA} with healthy $${spend}k spend`,
+            todo: `A/B test expanded text ads on top 5 converting keywords`
+          },
+          medium: {
+            insight: `CPA of $${CPA} performing well at $${spend}k spend`,
+            todo: `Implement automated bidding on keywords with >50 conversions/month`
+          },
+          low: {
+            insight: `Good CPA efficiency at $${CPA} with room to scale from $${spend}k`,
+            todo: `Create 3 new ad groups based on top performing keyword themes`
+          },
+          very_low: {
+            insight: `Promising $${CPA} CPA at initial $${spend}k spend level`,
+            todo: `Expand match types gradually while maintaining quality score >6`
+          }
+        },
+        neutral: {
+          very_high: {
+            insight: `CPA at $${CPA} near target with significant $${spend}k spend`,
+            todo: `Audit keywords with CPA >120% of target and reduce bids by 20%`
+          },
+          high: {
+            insight: `Average performance with $${CPA} CPA at $${spend}k spend`,
+            todo: `Optimize landing pages for keywords with bounce rate >65%`
+          },
+          medium: {
+            insight: `CPA holding at $${CPA} with moderate spend`,
+            todo: `Test responsive search ads in top 3 ad groups by spend`
+          },
+          low: {
+            insight: `Standard performance at $${CPA} CPA with $${spend}k investment`,
+            todo: `Implement broader match types on keywords with >2% conversion rate`
+          },
+          very_low: {
+            insight: `Limited data with $${CPA} CPA at $${spend}k spend`,
+            todo: `Add 10-15 exact match keywords from competitor analysis`
+          }
+        },
+        inefficient: {
+          very_high: {
+            insight: `CPA elevated at $${CPA} with concerning $${spend}k spend level`,
+            todo: `Pause all keywords with CPA >150% of target and quality score <5`
+          },
+          high: {
+            insight: `Underperforming with $${CPA} CPA at high spend`,
+            todo: `Reduce bids by 30% on keywords with conversion rate <1%`
+          },
+          medium: {
+            insight: `Poor efficiency with $${CPA} CPA vs $${mCPA} target`,
+            todo: `Move poor performers to exact match and add negative keyword list`
+          },
+          low: {
+            insight: `Struggling to hit targets with $${CPA} CPA`,
+            todo: `Pause keywords with zero conversions in past 30 days`
+          },
+          very_low: {
+            insight: `Poor initial performance with $${CPA} CPA`,
+            todo: `Restrict to exact match only and rebuild keyword list`
+          }
+        },
+        highly_inefficient: {
+          very_high: {
+            insight: `Critical: $${CPA} CPA severely above $${mCPA} target at high spend`,
+            todo: `Immediately reduce budget by 50% and pause bottom 40% of keywords by ROI`
+          },
+          high: {
+            insight: `Severe performance issues with $${CPA} CPA at $${spend}k spend`,
+            todo: `Pause all broad match keywords and reduce campaign daily budgets by 60%`
+          },
+          medium: {
+            insight: `Major efficiency problems with $${CPA} vs $${mCPA} target`,
+            todo: `Keep only top 20 converting keywords and rebuild campaign structure`
+          },
+          low: {
+            insight: `Very poor performance with $${CPA} CPA despite low spend`,
+            todo: `Pause campaign and audit all keywords, targeting, and landing pages`
+          },
+          very_low: {
+            insight: `Critical performance issues with $${CPA} CPA at start`,
+            todo: `Stop campaign and revise entire keyword strategy and targeting`
+          }
+        }
+      },
+      'Meta Retargeting': {
+        highly_efficient: {
+          very_high: {
+            insight: `Exceptional $${CPA} CPA with ${Math.round(((mCPA - CPA) / mCPA) * 100)}% below target at $${spend}k spend`,
+            todo: `Increase frequency caps by 50% for audiences with >3% CTR and expand lookalikes`
+          },
+          high: {
+            insight: `Strong performance with $${CPA} CPA and good scale`,
+            todo: `Create new lookalike audiences from top 5% of converters and increase budgets 25%`
+          },
+          medium: {
+            insight: `Excellent $${CPA} CPA with efficient audience targeting`,
+            todo: `Expand retargeting window to 45 days for high-intent visitors`
+          },
+          low: {
+            insight: `Great $${CPA} CPA efficiency at current spend level`,
+            todo: `Test value-based lookalikes and increase daily budgets by 30%`
+          },
+          very_low: {
+            insight: `Outstanding initial $${CPA} CPA vs $${mCPA} target`,
+            todo: `Double budget for audiences with ROAS >300% and expand placements`
+          }
+        },
+        efficient: {
+          very_high: {
+            insight: `Solid $${CPA} CPA at high $${spend}k spend level`,
+            todo: `Optimize placement targeting to exclude bottom 20% by CTR`
+          },
+          high: {
+            insight: `Good performance with $${CPA} CPA at scale`,
+            todo: `Create custom audiences based on top 25% time-on-site visitors`
+          },
+          medium: {
+            insight: `Effective $${CPA} CPA with current audience mix`,
+            todo: `Test dynamic creative optimization for top-performing audiences`
+          },
+          low: {
+            insight: `Promising $${CPA} CPA with room for growth`,
+            todo: `Implement broad audience expansion with 1% lookalike audiences`
+          },
+          very_low: {
+            insight: `Good early results with $${CPA} CPA`,
+            todo: `Add cart abandoners audience with 14-day window`
+          }
+        },
+        neutral: {
+          very_high: {
+            insight: `Mixed results with $${CPA} CPA at high spend`,
+            todo: `Reduce frequency on audiences with CTR <0.8% and adjust creative rotation`
+          },
+          high: {
+            insight: `Average $${CPA} CPA performance needs attention`,
+            todo: `Implement audience exclusions for users inactive >30 days`
+          },
+          medium: {
+            insight: `Standard $${CPA} CPA with current targeting`,
+            todo: `Test new ad formats and refresh creative for aged audiences`
+          },
+          low: {
+            insight: `Basic performance at $${CPA} CPA`,
+            todo: `Segment audience by engagement level and adjust bids accordingly`
+          },
+          very_low: {
+            insight: `Limited data with current $${CPA} CPA`,
+            todo: `Build initial remarketing lists with 7-day visitors`
+          }
+        },
+        inefficient: {
+          very_high: {
+            insight: `Concerning $${CPA} CPA with high $${spend}k spend`,
+            todo: `Reduce budget by 40% on audiences with CPA >130% of target`
+          },
+          high: {
+            insight: `Poor ROI with $${CPA} CPA at current scale`,
+            todo: `Narrow audience targeting and implement strict frequency caps`
+          },
+          medium: {
+            insight: `Underperforming with $${CPA} CPA vs target`,
+            todo: `Pause bottom 30% of audiences by conversion rate`
+          },
+          low: {
+            insight: `Weak $${CPA} CPA performance`,
+            todo: `Rebuild audience segments based on recent purchasers only`
+          },
+          very_low: {
+            insight: `Poor initial $${CPA} CPA results`,
+            todo: `Restrict to high-intent audiences and review pixel setup`
+          }
+        },
+        highly_inefficient: {
+          very_high: {
+            insight: `Critical: $${CPA} CPA severely above target with high spend`,
+            todo: `Pause all but top converting audience segments and reduce daily spend by 70%`
+          },
+          high: {
+            insight: `Major issues with $${CPA} CPA at scale`,
+            todo: `Stop expansion audiences and focus only on recent purchasers`
+          },
+          medium: {
+            insight: `Severe performance issues with $${CPA} CPA`,
+            todo: `Pause campaign and audit audience quality and creative relevance`
+          },
+          low: {
+            insight: `Very poor $${CPA} CPA despite low spend`,
+            todo: `Rebuild entire audience strategy with focus on high-intent signals`
+          },
+          very_low: {
+            insight: `Critical performance with $${CPA} CPA`,
+            todo: `Stop campaign and verify tracking setup and audience definitions`
+          }
+        }
+      }
+    };
+
+    const defaultInsights = {
+      highly_efficient: {
+        very_high: {
+          insight: 'Outstanding performance at scale',
+          todo: 'Lock in current advantages'
+        },
+        high: {
+          insight: 'Strong performance with room to grow',
+          todo: 'Plan strategic expansion'
+        },
+        medium: {
+          insight: 'Excellent efficiency metrics',
+          todo: 'Scale successful elements'
+        },
+        low: {
+          insight: 'High potential identified',
+          todo: 'Increase investment gradually'
+        },
+        very_low: {
+          insight: 'Promising early results',
+          todo: 'Develop scaling strategy'
+        }
+      },
+      efficient: {
+        very_high: {
+          insight: 'Good performance at volume',
+          todo: 'Optimize current mix'
+        },
+        high: {
+          insight: 'Solid results at scale',
+          todo: 'Expand successful areas'
+        },
+        medium: {
+          insight: 'Effective performance',
+          todo: 'Test new opportunities'
+        },
+        low: {
+          insight: 'Promising metrics',
+          todo: 'Identify growth areas'
+        },
+        very_low: {
+          insight: 'Good initial performance',
+          todo: 'Plan careful expansion'
+        }
+      },
+      neutral: {
+        very_high: {
+          insight: 'Mixed results at high spend',
+          todo: 'Review overall strategy'
+        },
+        high: {
+          insight: 'Average performance',
+          todo: 'Optimize key elements'
+        },
+        medium: {
+          insight: 'Standard metrics',
+          todo: 'Test improvements'
+        },
+        low: {
+          insight: 'Basic performance',
+          todo: 'Monitor effectiveness'
+        },
+        very_low: {
+          insight: 'Limited data available',
+          todo: 'Continue tracking'
+        }
+      },
+      inefficient: {
+        very_high: {
+          insight: 'Efficiency declining',
+          todo: 'Audit performance'
+        },
+        high: {
+          insight: 'ROI concerns',
+          todo: 'Reduce waste'
+        },
+        medium: {
+          insight: 'Below target metrics',
+          todo: 'Revise strategy'
+        },
+        low: {
+          insight: 'Weak performance',
+          todo: 'Evaluate approach'
+        },
+        very_low: {
+          insight: 'Poor results',
+          todo: 'Reassess strategy'
+        }
+      },
+      highly_inefficient: {
+        very_high: {
+          insight: 'Critical efficiency issues',
+          todo: 'Consider major reductions'
+        },
+        high: {
+          insight: 'Major performance problems',
+          todo: 'Pause underperformers'
+        },
+        medium: {
+          insight: 'Severe ROI issues',
+          todo: 'Review entire program'
+        },
+        low: {
+          insight: 'Very poor metrics',
+          todo: 'Consider suspension'
+        },
+        very_low: {
+          insight: 'Program failing',
+          todo: 'Halt investment'
+        }
+      }
+    };
+
+    const channelInsight = insights[channel] || defaultInsights;
+    const result = channelInsight[efficiencyLevel][spendLevel];
+    
+    console.log('Selected Insight:', {
+      channel,
+      efficiencyLevel,
+      spendLevel,
+      result,
+      isDefault: !insights[channel]
+    });
+    
+    return result;
+  };
+
   // Modern Marketing Effectiveness Chart - Single Color Theme
   const marketingEffectivenessOptions = {
     chart: {
@@ -138,7 +713,66 @@ const Insights = () => {
         offsetY: 2,
         opacity: 0.1,
         width: 8
-      }
+      },
+      useHTML: true,
+      formatter: function() {
+        const point = this.points[0];  // First point for spend
+        const mCPAPoint = this.points[1];  // Second point for mCPA
+        const CPAPoint = this.points[2];  // Third point for CPA
+        
+        const channelInsight = generateMarketingEffectivenessInsights(
+          point.category,
+          point.y,  // spend
+          mCPAPoint.y,  // mCPA
+          CPAPoint.y    // CPA
+        );
+        
+        return `
+          <div style="min-width: 280px; padding: 8px;">
+            <div style="font-weight: 600; font-size: 14px; color: #374151; margin-bottom: 8px;">
+              ${point.category}
+            </div>
+            <div style="margin-bottom: 8px;">
+              <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                <span style="color: #6b7280; font-size: 12px;">Spend</span>
+                <span style="color: #0ea5e9; font-weight: 500; font-size: 12px;">
+                  $${point.y}k
+                </span>
+              </div>
+              <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                <span style="color: #6b7280; font-size: 12px;">mCPA</span>
+                <span style="color: #6b7280; font-weight: 500; font-size: 12px;">
+                  $${mCPAPoint.y}
+                </span>
+              </div>
+              <div style="display: flex; justify-content: space-between;">
+                <span style="color: #6b7280; font-size: 12px;">CPA</span>
+                <span style="color: #374151; font-weight: 500; font-size: 12px;">
+                  $${CPAPoint.y}
+                </span>
+              </div>
+            </div>
+            <div style="border-top: 1px solid #e5e7eb; margin: 8px 0;"></div>
+            <div style="margin-bottom: 8px;">
+              <div style="font-weight: 500; font-size: 12px; color: #374151; margin-bottom: 4px;">
+                Insight
+              </div>
+              <div style="font-size: 12px; color: #6b7280;">
+                ${channelInsight.insight}
+              </div>
+            </div>
+            <div>
+              <div style="font-weight: 500; font-size: 12px; color: #374151; margin-bottom: 4px;">
+                Recommended Action
+              </div>
+              <div style="font-size: 12px; color: #6b7280;">
+                ${channelInsight.todo}
+              </div>
+            </div>
+          </div>
+        `;
+      },
+      shared: true
     }
   };
 
@@ -242,6 +876,56 @@ const Insights = () => {
         offsetY: 2,
         opacity: 0.1,
         width: 8
+      },
+      useHTML: true,
+      formatter: function() {
+        const point = this.point;
+        const channelInsight = generateChannelInsights(
+          point.category,
+          point.y,  // performance
+          point.spend || 0  // spend (add this to your data points)
+        );
+        
+        const performanceColor = point.y >= 0 ? '#0ea5e9' : '#6b7280';
+        
+        return `
+          <div style="min-width: 280px; padding: 8px;">
+            <div style="font-weight: 600; font-size: 14px; color: #374151; margin-bottom: 8px;">
+              ${point.category}
+            </div>
+            <div style="margin-bottom: 8px;">
+              <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                <span style="color: #6b7280; font-size: 12px;">Performance vs Target</span>
+                <span style="color: ${performanceColor}; font-weight: 500; font-size: 12px;">
+                  ${point.y >= 0 ? '+' : ''}${point.y.toFixed(1)}%
+                </span>
+              </div>
+              <div style="display: flex; justify-content: space-between;">
+                <span style="color: #6b7280; font-size: 12px;">Share of Spend</span>
+                <span style="color: #374151; font-weight: 500; font-size: 12px;">
+                  ${((point.spend || 0) / 140 * 100).toFixed(1)}%
+                </span>
+              </div>
+            </div>
+            <div style="border-top: 1px solid #e5e7eb; margin: 8px 0;"></div>
+            <div style="margin-bottom: 8px;">
+              <div style="font-weight: 500; font-size: 12px; color: #374151; margin-bottom: 4px;">
+                Insight
+              </div>
+              <div style="font-size: 12px; color: #6b7280;">
+                ${channelInsight.insight}
+              </div>
+            </div>
+            <div>
+              <div style="font-weight: 500; font-size: 12px; color: #374151; margin-bottom: 4px;">
+                Recommended Action
+              </div>
+              <div style="font-size: 12px; color: #6b7280;">
+                ${channelInsight.todo}
+              </div>
+            </div>
+          </div>
+        `;
       }
     }
   };

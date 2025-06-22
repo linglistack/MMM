@@ -9,7 +9,7 @@ import Configure from './pages/Configure';
 
 function App() {
   const [selectedTab, setSelectedTab] = useState(0);
-  const [currentKPI, setCurrentKPI] = useState('Walmart Revenue');
+  const [currentKPI, setCurrentKPI] = useState('Total Revenue (aggregate)');
   const [userMenuOpen, setUserMenuOpen] = useState(false);
 
   const handleTabChange = (index) => {

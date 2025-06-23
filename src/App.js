@@ -3,6 +3,7 @@ import Insights from './pages/Insights';
 import Goals from './pages/Goals';
 import Forecaster from './pages/Forecaster';
 import Optimizer from './pages/Optimizer';
+import DataAnalysis from './pages/DataAnalysis';
 import Reporter from './pages/Reporter';
 import RefreshTracker from './pages/RefreshTracker';
 import Configure from './pages/Configure';
@@ -42,7 +43,7 @@ function App() {
 
   const nextHighlight = () => {
     // Dynamically determine key element count based on current page
-    const pageNames = ['insights', 'goals', 'forecaster', 'optimizer', 'reporter', 'refreshTracker', 'configure'];
+    const pageNames = ['insights', 'goals', 'forecaster', 'optimizer', 'dataAnalysis', 'reporter', 'refreshTracker', 'configure'];
     const currentPage = pageNames[selectedTab];
     
     const elementCounts = {
@@ -50,6 +51,7 @@ function App() {
       goals: 3,
       forecaster: 3,
       optimizer: 3,
+      dataAnalysis: 3,
       reporter: 3,
       refreshTracker: 3,
       configure: 3
@@ -66,7 +68,7 @@ function App() {
   };
 
   const getHighlightInfo = (index) => {
-    const pageNames = ['insights', 'goals', 'forecaster', 'optimizer', 'reporter', 'refreshTracker', 'configure'];
+    const pageNames = ['insights', 'goals', 'forecaster', 'optimizer', 'dataAnalysis', 'reporter', 'refreshTracker', 'configure'];
     const currentPage = pageNames[selectedTab];
     
     const insightsData = {
@@ -287,6 +289,23 @@ function App() {
           ]
         }
       ],
+      dataAnalysis: [
+        {
+          label: 'Data Summary',
+          insights: ['Key data distributions', 'Outlier identification', 'Missing value analysis'],
+          optimizationOptions: [{ title: 'Clean Data', description: 'Automatically handle outliers and missing values.' }]
+        },
+        {
+          label: 'Correlation Matrix',
+          insights: ['Identify highly correlated variables', 'Understand feature relationships', 'Inform feature selection'],
+          optimizationOptions: [{ title: 'Reduce Collinearity', description: 'Run PCA to reduce highly correlated features.' }]
+        },
+        {
+          label: 'Time Series Analysis',
+          insights: ['Decompose trends and seasonality', 'Forecast future values', 'Detect anomalies'],
+          optimizationOptions: [{ title: 'Improve Forecast Model', description: 'Add exogenous variables to the time series model.' }]
+        }
+      ],
       reporter: [
         {
           label: 'Report Summary',
@@ -418,7 +437,7 @@ function App() {
 
   const getSelectorForIndex = (index) => {
     if (index === null) return null;
-    const pageNames = ['insights', 'goals', 'forecaster', 'optimizer', 'reporter', 'refreshTracker', 'configure'];
+    const pageNames = ['insights', 'goals', 'forecaster', 'optimizer', 'dataAnalysis', 'reporter', 'refreshTracker', 'configure'];
     const currentPage = pageNames[selectedTab];
     const selectors = {
       insights: [
@@ -433,6 +452,7 @@ function App() {
       goals: ['.goals-overview', '.progress-tracking', '.goal-details'],
       forecaster: ['.forecast-chart', '.forecast-metrics', '.scenario-analysis'],
       optimizer: ['.optimization-suggestions', '.budget-recommendations', '.performance-metrics'],
+      dataAnalysis: ['.data-summary', '.correlation-matrix', '.time-series-analysis'],
       reporter: ['.report-summary', '.data-visualization', '.key-findings'],
       refreshTracker: ['.refresh-status', '.tracking-metrics', '.update-history'],
       configure: ['.settings-panel', '.configuration-options', '.system-status']
@@ -445,7 +465,7 @@ function App() {
   const getCurrentFocusedSelector = () => {
     if (highlightedElement === null) return null;
     
-    const pageNames = ['insights', 'goals', 'forecaster', 'optimizer', 'reporter', 'refreshTracker', 'configure'];
+    const pageNames = ['insights', 'goals', 'forecaster', 'optimizer', 'dataAnalysis', 'reporter', 'refreshTracker', 'configure'];
     const currentPage = pageNames[selectedTab];
     
     const selectors = {
@@ -461,6 +481,7 @@ function App() {
       goals: ['.goals-overview', '.progress-tracking', '.goal-details'],
       forecaster: ['.forecast-chart', '.forecast-metrics', '.scenario-analysis'],
       optimizer: ['.optimization-suggestions', '.budget-recommendations', '.performance-metrics'],
+      dataAnalysis: ['.data-summary', '.correlation-matrix', '.time-series-analysis'],
       reporter: ['.report-summary', '.data-visualization', '.key-findings'],
       refreshTracker: ['.refresh-status', '.tracking-metrics', '.update-history'],
       configure: ['.settings-panel', '.configuration-options', '.system-status']
@@ -473,7 +494,7 @@ function App() {
   // Apply focus mode CSS classes
   useEffect(() => {
     if (focusMode && highlightedElement !== null) {
-      const pageNames = ['insights', 'goals', 'forecaster', 'optimizer', 'reporter', 'refreshTracker', 'configure'];
+      const pageNames = ['insights', 'goals', 'forecaster', 'optimizer', 'dataAnalysis', 'reporter', 'refreshTracker', 'configure'];
       const currentPage = pageNames[selectedTab];
       
       const selectors = {
@@ -489,6 +510,7 @@ function App() {
         goals: ['.goals-overview', '.progress-tracking', '.goal-details'],
         forecaster: ['.forecast-chart', '.forecast-metrics', '.scenario-analysis'],
         optimizer: ['.optimization-suggestions', '.budget-recommendations', '.performance-metrics'],
+        dataAnalysis: ['.data-summary', '.correlation-matrix', '.time-series-analysis'],
         reporter: ['.report-summary', '.data-visualization', '.key-findings'],
         refreshTracker: ['.refresh-status', '.tracking-metrics', '.update-history'],
         configure: ['.settings-panel', '.configuration-options', '.system-status']
@@ -536,6 +558,7 @@ function App() {
         '.todo-items', '.header-section', '.goals-overview', '.progress-tracking', '.goal-details',
         '.forecast-chart', '.forecast-metrics', '.scenario-analysis',
         '.optimization-suggestions', '.budget-recommendations', '.performance-metrics',
+        '.data-summary', '.correlation-matrix', '.time-series-analysis',
         '.report-summary', '.data-visualization', '.key-findings',
         '.refresh-status', '.tracking-metrics', '.update-history',
         '.settings-panel', '.configuration-options', '.system-status'
@@ -727,6 +750,15 @@ function App() {
         </svg>
       ), 
       component: <Optimizer /> 
+    },
+    { 
+      text: 'Data Analysis', 
+      icon: (
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+        </svg>
+      ), 
+      component: <DataAnalysis /> 
     },
     { 
       text: 'Reporter', 

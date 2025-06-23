@@ -582,7 +582,6 @@ function App() {
     });
 
     setTimeout(() => {
-      const agentUpdate = { id: Date.now(), sender: 'agent', text: 'Agent successfully initialized. Now analyzing historical data...' };
       setOptimizationState(prev => ({
         ...prev,
         progress: 25,
@@ -590,12 +589,10 @@ function App() {
           s.id === 1 ? { ...s, status: 'completed', description: 'Agent successfully initialized.' } : 
           s.id === 2 ? { ...s, status: 'in-progress', description: `Analyzing historical data for ${label}...`, timestamp: new Date() } : s
         ),
-        chatMessages: [...prev.chatMessages, agentUpdate]
       }));
     }, 1000);
 
     setTimeout(() => {
-      const agentUpdate = { id: Date.now(), sender: 'agent', text: `Analysis of ${label} complete. Now modeling potential outcomes...` };
       setOptimizationState(prev => ({
         ...prev,
         progress: 50,
@@ -603,12 +600,10 @@ function App() {
           s.id === 2 ? { ...s, status: 'completed', description: `Analysis of ${label} complete.` } : 
           s.id === 3 ? { ...s, status: 'in-progress', description: 'Modeling potential outcomes and ROI for 3 scenarios...', timestamp: new Date() } : s
         ),
-        chatMessages: [...prev.chatMessages, agentUpdate]
       }));
     }, 2500);
 
     setTimeout(() => {
-      const agentUpdate = { id: Date.now(), sender: 'agent', text: 'Scenario modeling complete. Compiling and ranking recommendations now.' };
       setOptimizationState(prev => ({
         ...prev,
         progress: 75,
@@ -616,7 +611,6 @@ function App() {
           s.id === 3 ? { ...s, status: 'completed', description: 'Scenario modeling complete.' } : 
           s.id === 4 ? { ...s, status: 'in-progress', description: 'Compiling and ranking recommendations...', timestamp: new Date() } : s
         ),
-        chatMessages: [...prev.chatMessages, agentUpdate]
       }));
     }, 4000);
     

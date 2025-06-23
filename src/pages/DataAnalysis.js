@@ -289,6 +289,210 @@ const CustomerLevelTable = ({ currentHighlight, isPlaying }) => {
   )
 };
 
+const modelParameterData = [
+  { Model: 'tv_S', Average: 0.022, SD: 0.004, LCI: 0.018, UCI: 0.026, '4_138_1': 0.02, '4_133_3': 0.029, '4_141_7': 0.029, '4_133_7': 0.016, '4_140_1': 0.026, '4_129_5': 0.021, '4_134_4': 0.025, '4_141_6': 0.027, '4_143_6': 0.019, '2_136_2': 0.022, '2_117_4': 0.021, '2_126_1': 0.021, '2_143_2': 0.02, '2_115_6': 0.023 },
+  { Model: 'ooh_S', Average: 0.021, SD: 0.005, LCI: 0.016, UCI: 0.026, '4_138_1': 0.021, '4_133_3': 0.022, '4_141_7': 0.024, '4_133_7': 0.016, '4_140_1': 0.026, '4_129_5': 0.018, '4_134_4': 0.014, '4_141_6': 0.032, '4_143_6': 0.025, '2_136_2': 0.022, '2_117_4': 0.021, '2_126_1': 0.021, '2_143_2': 0.02, '2_115_6': 0.029 },
+  { Model: 'print_S', Average: 0.015, SD: 0.004, LCI: 0.011, UCI: 0.018, '4_138_1': 0.014, '4_133_3': 0.018, '4_141_7': 0.026, '4_133_7': 0.013, '4_140_1': 0.018, '4_129_5': 0.013, '4_134_4': 0.014, '4_141_6': 0.017, '4_143_6': 0.015, '2_136_2': 0.013, '2_117_4': 0.012, '2_126_1': 0.012, '2_143_2': 0.012, '2_115_6': 0.013 },
+  { Model: 'facebook', Average: 0.01, SD: 0.003, LCI: 0.007, UCI: 0.013, '4_138_1': 0.009, '4_133_3': 0.006, '4_141_7': 0.006, '4_133_7': 0.008, '4_140_1': 0.01, '4_129_5': 0.009, '4_134_4': 0.011, '4_141_6': 0.007, '4_143_6': 0.012, '2_136_2': 0.013, '2_117_4': 0.013, '2_126_1': 0.012, '2_143_2': 0.017, '2_115_6': 0.013 },
+  { Model: 'search_S', Average: 0.017, SD: 0.004, LCI: 0.012, UCI: 0.021, '4_138_1': 0.02, '4_133_3': 0.017, '4_141_7': 0.018, '4_133_7': 0.019, '4_140_1': 0.02, '4_129_5': 0.021, '4_134_4': 0.013, '4_141_6': 0.023, '4_143_6': 0.02, '2_136_2': 0.031, '2_117_4': 0.01, '2_126_1': 0.01, '2_143_2': 0.015, '2_115_6': 0.018 },
+  { Model: 'newsletter', Average: 0.032, SD: 0.015, LCI: 0.016, UCI: 0.047, '4_138_1': 0.025, '4_133_3': 0.018, '4_141_7': 0.016, '4_133_7': 0.038, '4_140_1': 0.029, '4_129_5': 0.07, '4_134_4': 0.012, '4_141_6': 0.022, '4_143_6': 0.022, '2_136_2': 0.047, '2_117_4': 0.033, '2_126_1': 0.033, '2_143_2': 0.03, '2_115_6': 0.047 },
+  { Model: 'Total Med', Average: 0.116, SD: 0.017, LCI: 0.1, UCI: 0.133, '4_138_1': 0.109, '4_133_3': 0.11, '4_141_7': 0.119, '4_133_7': 0.11, '4_140_1': 0.112, '4_129_5': 0.145, '4_134_4': 0.084, '4_141_6': 0.132, '4_143_6': 0.107, '2_136_2': 0.126, '2_117_4': 0.108, '2_126_1': 0.108, '2_143_2': 0.11, '2_115_6': 0.146 },
+  { Model: 'trend', Average: 0.011, SD: '', LCI: '', UCI: '', '4_138_1': 0, '4_133_3': 0, '4_141_7': 0, '4_133_7': 0, '4_140_1': 0, '4_129_5': 0, '4_134_4': 0.151, '4_141_6': 0, '4_143_6': 0, '2_136_2': 0, '2_117_4': 0, '2_126_1': 0, '2_143_2': 0, '2_115_6': 0 },
+  { Model: 'season', Average: -0.001, SD: '', LCI: '', UCI: '', '4_138_1': -0.001, '4_133_3': -0.001, '4_141_7': -0.001, '4_133_7': -0.001, '4_140_1': -0.001, '4_129_5': -0.001, '4_134_4': -0.001, '4_141_6': -0.001, '4_143_6': -0.001, '2_136_2': -0.001, '2_117_4': -0.001, '2_126_1': -0.001, '2_143_2': -0.001, '2_115_6': -0.001 },
+  { Model: 'holiday', Average: 0.006, SD: '', LCI: '', UCI: '', '4_138_1': 0.006, '4_133_3': 0.006, '4_141_7': 0.006, '4_133_7': 0.006, '4_140_1': 0.006, '4_129_5': 0.006, '4_134_4': 0.007, '4_141_6': 0.006, '4_143_6': 0.005, '2_136_2': 0.005, '2_117_4': 0.006, '2_126_1': 0.006, '2_143_2': 0.006, '2_115_6': 0.005 },
+  { Model: 'intercept', Average: 0.46, SD: '', LCI: '', UCI: '', '4_138_1': 0.481, '4_133_3': 0.469, '4_141_7': 0.462, '4_133_7': 0.437, '4_140_1': 0.447, '4_129_5': 0.404, '4_134_4': 0.302, '4_141_6': 0.499, '4_143_6': 0.498, '2_136_2': 0.461, '2_117_4': 0.489, '2_126_1': 0.489, '2_143_2': 0.486, '2_115_6': 0.516 },
+  { Model: 'competitio', Average: 0.402, SD: '', LCI: '', UCI: '', '4_138_1': 0.399, '4_133_3': 0.41, '4_141_7': 0.408, '4_133_7': 0.441, '4_140_1': 0.429, '4_129_5': 0.439, '4_134_4': 0.452, '4_141_6': 0.36, '4_143_6': 0.385, '2_136_2': 0.385, '2_117_4': 0.391, '2_126_1': 0.391, '2_143_2': 0.393, '2_115_6': 0.329 },
+  { Model: 'events', Average: 0.006, SD: '', LCI: '', UCI: '', '4_138_1': 0.006, '4_133_3': 0.006, '4_141_7': 0.006, '4_133_7': 0.006, '4_140_1': 0.007, '4_129_5': 0.007, '4_134_4': 0.007, '4_141_6': 0.006, '4_143_6': 0.006, '2_136_2': 0.006, '2_117_4': 0.006, '2_126_1': 0.006, '2_143_2': 0.006, '2_115_6': 0.006 },
+  { Model: 'Total Base', Average: 0.884, SD: '', LCI: '', UCI: '', '4_138_1': 0.891, '4_133_3': 0.89, '4_141_7': 0.881, '4_133_7': 0.89, '4_140_1': 0.893, '4_129_5': 0.888, '4_134_4': 0.916, '4_141_6': 0.869, '4_143_6': 0.893, '2_136_2': 0.874, '2_117_4': 0.892, '2_126_1': 0.892, '2_143_2': 0.89, '2_115_6': 0.854 },
+  { Model: 'depVarHat', Average: 1, SD: '', LCI: '', UCI: '', '4_138_1': 1, '4_133_3': 1, '4_141_7': 1, '4_133_7': 1, '4_140_1': 1, '4_129_5': 1, '4_134_4': 1, '4_141_6': 1, '4_143_6': 1, '2_136_2': 1, '2_117_4': 1, '2_126_1': 1, '2_143_2': 1, '2_115_6': 1 },
+];
+
+const modelParameterHeaders = [
+  'Model', 'Average', 'SD', 'LCI', 'UCI', '4_138_1', '4_133_3', '4_141_7', '4_133_7', '4_140_1', '4_129_5', '4_134_4', '4_141_6', '4_143_6', '2_136_2', '2_117_4', '2_126_1', '2_143_2', '2_115_6'
+];
+
+const modelParameterInsights = [
+  { text: "In this section, I'll walk you through the model structure and how each variable contributes to the final outcome we're analyzing — whether it's sales, conversions, or another key metric.", id: 'intro', highlight: null },
+  { text: "Our model divides the influencing factors into two main groups: First, Media Variables, which are marketing activities we can directly control. These are our paid marketing efforts, such as TV, print, Facebook, and newsletters.", id: 'media-vars', highlight: { type: 'group', names: ['tv_S','ooh_S','print_S','facebook','search_S','newsletter','Total Med'] } },
+  { text: "Second, Base Variables, which are more external or natural market forces, like seasonality or competitor behavior.", id: 'base-vars', highlight: { type: 'group', names: ['trend','season','holiday','intercept','competitio','events','Total Base'] } },
+  { text: "Among all media channels, we found that 'newsletter' is the most effective, with an average contribution of 0.032.", id: 'newsletter', highlight: { type: 'row', name: 'newsletter' } },
+  { text: "On the other hand, 'Facebook' contributes less — around 0.01 — but still plays a meaningful role.", id: 'facebook', highlight: { type: 'row', name: 'facebook' } },
+  { text: "If we sum up all media variables, they account for about 11.6% of the total explained impact. That means media spend is responsible for roughly one-ninth of the results we see.", id: 'media-sum', highlight: { type: 'row', name: 'Total Med' } },
+  { text: "The remaining 88.4% is driven by external or base variables, which we'll look at next. What stands out here is that nearly 90% of performance is driven by non-media factors — like trend, seasonality, and competitor actions.", id: 'base-sum', highlight: { type: 'row', name: 'Total Base' } },
+  { text: "This tells us that media alone can't move the needle — unless we align with these underlying forces. While media explains just over 10%, competitor actions alone explain over 40% — making them 4 times more influential than all paid media combined.", id: 'competitor', highlight: { type: 'row', name: 'competitio' } },
+  { text: "Add to that a strong intercept and predictable seasonal triggers, and the message is clear: The market is doing the heavy lifting. Our job is to align, not just spend.", id: 'conclusion', highlight: { type: 'group', names: ['intercept','season','trend','competitio','events'] } },
+];
+
+// 百分比格式化函数
+const formatPercent = (val) => {
+  if (typeof val !== 'number' || isNaN(val)) return val;
+  return (val * 100).toFixed(1) + '%';
+};
+
+const ModelParameterTable = () => {
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [highlightedIndex, setHighlightedIndex] = useState(0);
+  const currentInsight = isPlaying ? modelParameterInsights[highlightedIndex] : null;
+
+  const { isReady: isSpeechReady, getPremiumVoice } = useSpeechSynthesis();
+
+  // 关键行分组
+  const mediaRows = ['tv_S','ooh_S','print_S','facebook','search_S','newsletter','Total Med'];
+  const baseRows = ['trend','season','holiday','intercept','competitio','events','Total Base'];
+  const keyRows = [...mediaRows, ...baseRows];
+  const keyCols = ['Average','SD','LCI','UCI'];
+
+  // 色阶函数
+  const getColColor = (val, col) => {
+    if (typeof val !== 'number' || isNaN(val)) return '';
+    if (col === 'Average') {
+      if (val > 0.03) return 'bg-green-200';
+      if (val > 0.015) return 'bg-green-100';
+      if (val < 0) return 'bg-red-100';
+      return '';
+    }
+    if (col === 'SD') {
+      if (val > 0.01) return 'bg-yellow-100';
+      if (val > 0.005) return 'bg-yellow-50';
+      return '';
+    }
+    if (col === 'LCI' || col === 'UCI') {
+      if (val > 0.1) return 'bg-blue-100';
+      if (val < 0) return 'bg-red-100';
+      return '';
+    }
+    return '';
+  };
+
+  // 行分组底色
+  const getRowColor = (rowName) => {
+    if (mediaRows.includes(rowName)) return 'bg-blue-50';
+    if (baseRows.includes(rowName)) return 'bg-purple-50';
+    return '';
+  };
+
+  // 洞察高亮
+  const getHighlightClass = (row, highlight) => {
+    if (!highlight) return '';
+    if (highlight.type === 'row' && highlight.name === row.Model) return 'ring-2 ring-primary-500';
+    if (highlight.type === 'group' && highlight.names?.includes(row.Model)) return 'ring-2 ring-primary-400';
+    return '';
+  };
+
+  useEffect(() => {
+    if (isPlaying && currentInsight && isSpeechReady) {
+      const utterance = new SpeechSynthesisUtterance(currentInsight.text);
+      const premiumVoice = getPremiumVoice();
+      if (premiumVoice) {
+        utterance.voice = premiumVoice;
+        utterance.rate = 0.9;
+        utterance.pitch = 1;
+      } else {
+        utterance.rate = 0.9;
+        utterance.pitch = 1.1;
+      }
+      window.speechSynthesis.cancel();
+      window.speechSynthesis.speak(utterance);
+      utterance.onend = () => {
+        if (highlightedIndex < modelParameterInsights.length - 1) {
+          setTimeout(() => setHighlightedIndex(prev => prev + 1), 1000);
+        } else {
+          setIsPlaying(false);
+        }
+      };
+    } else {
+      window.speechSynthesis.cancel();
+    }
+    return () => window.speechSynthesis.cancel();
+  }, [isPlaying, highlightedIndex, isSpeechReady]);
+
+  const handlePlay = () => {
+    setHighlightedIndex(0);
+    setIsPlaying(true);
+  };
+  const handleStop = () => {
+    setIsPlaying(false);
+    window.speechSynthesis.cancel();
+  };
+  const handleNext = () => {
+    setHighlightedIndex((prevIndex) => (prevIndex + 1) % modelParameterInsights.length);
+    window.speechSynthesis.cancel();
+  };
+
+  return (
+    <div className="mt-12 bg-white p-6 rounded-lg shadow-sm relative">
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="text-xl font-bold text-gray-800">Model Parameter Summary</h2>
+        <div className="flex items-center space-x-2">
+          {!isPlaying ? (
+            <button onClick={handlePlay} className="bg-white text-primary-600 px-4 py-2 rounded-lg hover:bg-primary-50 border border-primary-200 transition-colors flex items-center space-x-2">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd" />
+              </svg>
+              <span>Play Insights</span>
+            </button>
+          ) : (
+            <>
+              <button onClick={handleNext} className="bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition-colors flex items-center space-x-2">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" >
+                  <path fillRule="evenodd" d="M10.293 15.707a1 1 0 010-1.414L14.586 10l-4.293-4.293a1 1 0 111.414-1.414l5 5a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                  <path fillRule="evenodd" d="M4.293 15.707a1 1 0 010-1.414L8.586 10 4.293 5.707a1 1 0 011.414-1.414l5 5a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                </svg>
+                <span>Next Insight ({highlightedIndex + 1}/{modelParameterInsights.length})</span>
+              </button>
+              <button onClick={handleStop} className="bg-gray-600 text-white px-3 py-2 rounded-lg hover:bg-gray-700 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+              </button>
+            </>
+          )}
+        </div>
+      </div>
+      {currentInsight && (
+        <div className="fixed bottom-8 right-8 w-full max-w-sm bg-white p-4 rounded-lg shadow-lg border border-gray-200 z-20">
+          <h3 className="text-sm font-semibold text-gray-900 mb-2">Insight #{highlightedIndex + 1}</h3>
+          <p className="text-xs text-gray-600 leading-relaxed">{currentInsight.text}</p>
+        </div>
+      )}
+      <div className="overflow-x-auto">
+        <table className="w-full text-sm text-left text-gray-700">
+          <thead className="sticky top-0 z-10 bg-white bg-gray-100 text-xs text-gray-700 uppercase tracking-wider">
+            <tr>
+              {modelParameterHeaders.map(h => (
+                <th key={h} className="py-3 px-4">{h}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {modelParameterData.map((row, i) => {
+              const rowColor = keyRows.includes(row.Model) ? getRowColor(row.Model) : '';
+              const highlightClass = getHighlightClass(row, currentInsight?.highlight);
+              return (
+                <tr key={i} className={`border-b border-gray-200 hover:bg-gray-50 transition-all duration-300 ${rowColor} ${highlightClass}`}>
+                  {modelParameterHeaders.map(h => {
+                    let cell = row[h] !== undefined ? row[h] : '';
+                    let cellColor = '';
+                    if (keyRows.includes(row.Model) && keyCols.includes(h)) {
+                      cellColor = getColColor(cell, h);
+                    }
+                    // 所有小数都渲染为百分比
+                    let display = cell;
+                    if (typeof cell === 'number' && !Number.isInteger(cell)) {
+                      display = formatPercent(cell);
+                    }
+                    return (
+                      <td key={h} className={`py-3 px-4 ${cellColor}`}>{display}</td>
+                    );
+                  })}
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+};
+
 const DataAnalysis = () => {
   const headers = ['Subgroup', 'Reach', 'Conversions', 'CR', 'Revenue', 'CCR', 'Lift %', 'Spend', 'aaRevenue', 'aaROAS'];
   const [isPlaying, setIsPlaying] = useState(false);
@@ -574,6 +778,7 @@ const DataAnalysis = () => {
         </div>
         
         <CustomerLevelTable currentHighlight={currentHighlight2} isPlaying={isPlaying2} />
+        <ModelParameterTable />
       </div>
     </div>
   );

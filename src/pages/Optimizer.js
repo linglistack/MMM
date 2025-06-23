@@ -3,7 +3,7 @@ import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import ChartNarrator from '../components/ChartNarrator';
 import OptimizationSuggestions from '../components/OptimizationSuggestions';
-
+import RFMAnalysis from '../components/RFMAnalysis';
 const Optimizer = () => {
   const [totalBudget, setTotalBudget] = useState(210);
   const [optimizationRunning, setOptimizationRunning] = useState(false);
@@ -409,6 +409,11 @@ const Optimizer = () => {
         <div className="bg-white rounded-lg shadow-sm p-6 mb-8">
           <OptimizationSuggestions />
         </div>
+        <div className="bg-white rounded-lg shadow-sm p-6 mb-8">
+        <RFMAnalysis/>
+
+        </div>
+
       </div>
     </div>
   );

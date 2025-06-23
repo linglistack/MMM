@@ -149,3 +149,36 @@ html {
   background-color: #4f46e5;
   transition: width 0.3s ease;
 }
+
+/* RFM Analysis Table Styles */
+.highlight-row {
+  transition: all 0.3s ease;
+}
+
+.highlight-row.active {
+  background-color: rgba(63, 81, 181, 0.08) !important;
+  box-shadow: 0 0 0 2px rgba(63, 81, 181, 0.2);
+}
+
+.highlight-row.active td {
+  font-weight: 600;
+  color: #1976d2;
+}
+
+.highlight-cell {
+  transition: all 0.3s ease;
+}
+
+.highlight-cell.active {
+  background-color: rgba(63, 81, 181, 0.12);
+  font-weight: 600;
+  color: #1976d2;
+}
+
+.highlight-column {
+  transition: all 0.3s ease;
+}
+
+.highlight-column.active {
+  background-color: rgba(63, 81, 181, 0.08);
+}

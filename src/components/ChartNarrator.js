@@ -3,13 +3,22 @@ import React, { useState, useEffect, useRef } from 'react';
 const ChartNarrator = ({ 
   chartId, 
   insights,
-  highlightAreas = [],
   onPlayStateChange
 }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentInsightIndex, setCurrentInsightIndex] = useState(0);
   const audioRef = useRef(null);
   const timeoutRef = useRef(null);
+
+  const clearHighlights = () => {
+    const container = document.querySelector(`#${chartId}`);
+    if (container) {
+      // Remove all active highlights
+      container.querySelectorAll('.highlight-row').forEach(row => {
+        row.style.backgroundColor = row.dataset.originalBg || '';
+      });
+    }
+  };
 
   const stopNarration = () => {
     if (audioRef.current) {
@@ -20,6 +29,7 @@ const ChartNarrator = ({
     }
     setIsPlaying(false);
     setCurrentInsightIndex(0);
+    clearHighlights();
     onPlayStateChange && onPlayStateChange(false);
   };
 
@@ -54,29 +64,24 @@ const ChartNarrator = ({
     // Add slight pauses at punctuation
     utterance.text = insight.text.replace(/([.,!?])/g, '$1 ');
 
-    // Handle highlighting
-    if (insight.highlightArea) {
-      const chart = document.querySelector(`#${chartId}`);
-      if (chart) {
-        // Remove previous highlights
-        chart.querySelectorAll('.highlight-overlay').forEach(el => el.remove());
-        
-        // Add new highlight
-        const overlay = document.createElement('div');
-        overlay.className = 'highlight-overlay';
-        overlay.style.position = 'absolute';
-        overlay.style.backgroundColor = 'rgba(59, 130, 246, 0.1)';
-        overlay.style.border = '2px solid rgba(59, 130, 246, 0.5)';
-        overlay.style.borderRadius = '4px';
-        overlay.style.pointerEvents = 'none';
-        overlay.style.transition = 'all 0.3s ease';
-        
-        // Position overlay based on highlight area
-        Object.assign(overlay.style, insight.highlightArea);
-        
-        chart.style.position = 'relative';
-        chart.appendChild(overlay);
-      }
+    // Handle row highlighting
+    const container = document.querySelector(`#${chartId}`);
+    if (container && insight.highlightArea && insight.highlightArea.rows) {
+      // Clear previous highlights
+      clearHighlights();
+      
+      // Apply new highlights
+      insight.highlightArea.rows.forEach(rowIndex => {
+        const row = container.querySelector(`[data-row-index="${rowIndex}"]`);
+        if (row) {
+          // Store original background if not already stored
+          if (!row.dataset.originalBg) {
+            row.dataset.originalBg = row.style.backgroundColor || '';
+          }
+          // Apply highlight style
+          Object.assign(row.style, insight.highlightArea.style);
+        }
+      });
     }
 
     utterance.onend = () => {

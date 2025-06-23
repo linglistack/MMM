@@ -312,15 +312,15 @@ const modelParameterHeaders = [
 ];
 
 const modelParameterInsights = [
-  { text: "In this section, I'll walk you through the model structure and how each variable contributes to the final outcome we're analyzing — whether it's sales, conversions, or another key metric.", id: 'intro', highlight: null },
-  { text: "Our model divides the influencing factors into two main groups: First, Media Variables, which are marketing activities we can directly control. These are our paid marketing efforts, such as TV, print, Facebook, and newsletters.", id: 'media-vars', highlight: { type: 'group', names: ['tv_S','ooh_S','print_S','facebook','search_S','newsletter','Total Med'] } },
-  { text: "Second, Base Variables, which are more external or natural market forces, like seasonality or competitor behavior.", id: 'base-vars', highlight: { type: 'group', names: ['trend','season','holiday','intercept','competitio','events','Total Base'] } },
-  { text: "Among all media channels, we found that 'newsletter' is the most effective, with an average contribution of 0.032.", id: 'newsletter', highlight: { type: 'row', name: 'newsletter' } },
-  { text: "On the other hand, 'Facebook' contributes less — around 0.01 — but still plays a meaningful role.", id: 'facebook', highlight: { type: 'row', name: 'facebook' } },
-  { text: "If we sum up all media variables, they account for about 11.6% of the total explained impact. That means media spend is responsible for roughly one-ninth of the results we see.", id: 'media-sum', highlight: { type: 'row', name: 'Total Med' } },
-  { text: "The remaining 88.4% is driven by external or base variables, which we'll look at next. What stands out here is that nearly 90% of performance is driven by non-media factors — like trend, seasonality, and competitor actions.", id: 'base-sum', highlight: { type: 'row', name: 'Total Base' } },
-  { text: "This tells us that media alone can't move the needle — unless we align with these underlying forces. While media explains just over 10%, competitor actions alone explain over 40% — making them 4 times more influential than all paid media combined.", id: 'competitor', highlight: { type: 'row', name: 'competitio' } },
-  { text: "Add to that a strong intercept and predictable seasonal triggers, and the message is clear: The market is doing the heavy lifting. Our job is to align, not just spend.", id: 'conclusion', highlight: { type: 'group', names: ['intercept','season','trend','competitio','events'] } },
+  { text: "In this section, I'll walk you through the model structure and how each variable contributes to the final outcome we're analyzing — whether it's sales, conversions, or another key metric.", id: 'intro', highlight: null, audio: "3_1.mp3" },
+  { text: "Our model divides the influencing factors into two main groups: First, Media Variables, which are marketing activities we can directly control. These are our paid marketing efforts, such as TV, print, Facebook, and newsletters.", id: 'media-vars', highlight: { type: 'group', names: ['tv_S','ooh_S','print_S','facebook','search_S','newsletter','Total Med'] }, audio: "3_2.mp3" },
+  { text: "Second, Base Variables, which are more external or natural market forces, like seasonality or competitor behavior.", id: 'base-vars', highlight: { type: 'group', names: ['trend','season','holiday','intercept','competitio','events','Total Base'] }, audio: "3_3.mp3" },
+  { text: "Among all media channels, we found that 'newsletter' is the most effective, with an average contribution of 0.032.", id: 'newsletter', highlight: { type: 'row', name: 'newsletter' }, audio: "3_4.mp3" },
+  { text: "On the other hand, 'Facebook' contributes less — around 0.01 — but still plays a meaningful role.", id: 'facebook', highlight: { type: 'row', name: 'facebook' }, audio: "3_5.mp3" },
+  { text: "If we sum up all media variables, they account for about 11.6% of the total explained impact. That means media spend is responsible for roughly one-ninth of the results we see.", id: 'media-sum', highlight: { type: 'row', name: 'Total Med' }, audio: "3_6.mp3" },
+  { text: "The remaining 88.4% is driven by external or base variables, which we'll look at next. What stands out here is that nearly 90% of performance is driven by non-media factors — like trend, seasonality, and competitor actions.", id: 'base-sum', highlight: { type: 'row', name: 'Total Base' }, audio: "3_7.mp3" },
+  { text: "This tells us that media alone can't move the needle — unless we align with these underlying forces. While media explains just over 10%, competitor actions alone explain over 40% — making them 4 times more influential than all paid media combined.", id: 'competitor', highlight: { type: 'row', name: 'competitio' }, audio: "3_8.mp3" },
+  { text: "Add to that a strong intercept and predictable seasonal triggers, and the message is clear: The market is doing the heavy lifting. Our job is to align, not just spend.", id: 'conclusion', highlight: { type: 'group', names: ['intercept','season','trend','competitio','events'] }, audio: "3_9.mp3" },
 ];
 
 // 百分比格式化函数
@@ -332,7 +332,24 @@ const formatPercent = (val) => {
 const ModelParameterTable = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [highlightedIndex, setHighlightedIndex] = useState(0);
+  const audioRef = useRef(null);
+
   const currentInsight = isPlaying ? modelParameterInsights[highlightedIndex] : null;
+
+  useEffect(() => {
+    if (isPlaying && currentInsight?.audio) {
+      audioRef.current.src = `/audio/${currentInsight.audio}`;
+      audioRef.current.play();
+    }
+  }, [isPlaying, highlightedIndex, currentInsight]);
+
+  const handleAudioEnded = () => {
+    if (highlightedIndex < modelParameterInsights.length - 1) {
+      setHighlightedIndex(highlightedIndex + 1);
+    } else {
+      setIsPlaying(false);
+    }
+  };
 
   const { isReady: isSpeechReady, getPremiumVoice } = useSpeechSynthesis();
 
@@ -379,44 +396,17 @@ const ModelParameterTable = () => {
     return '';
   };
 
-  useEffect(() => {
-    if (isPlaying && currentInsight && isSpeechReady) {
-      const utterance = new SpeechSynthesisUtterance(currentInsight.text);
-      const premiumVoice = getPremiumVoice();
-      if (premiumVoice) {
-        utterance.voice = premiumVoice;
-        utterance.rate = 0.9;
-        utterance.pitch = 1;
-      } else {
-        utterance.rate = 0.9;
-        utterance.pitch = 1.1;
-      }
-      window.speechSynthesis.cancel();
-      window.speechSynthesis.speak(utterance);
-      utterance.onend = () => {
-        if (highlightedIndex < modelParameterInsights.length - 1) {
-          setTimeout(() => setHighlightedIndex(prev => prev + 1), 1000);
-        } else {
-          setIsPlaying(false);
-        }
-      };
-    } else {
-      window.speechSynthesis.cancel();
-    }
-    return () => window.speechSynthesis.cancel();
-  }, [isPlaying, highlightedIndex, isSpeechReady]);
-
   const handlePlay = () => {
     setHighlightedIndex(0);
     setIsPlaying(true);
   };
   const handleStop = () => {
     setIsPlaying(false);
-    window.speechSynthesis.cancel();
+    audioRef.current.pause();
   };
   const handleNext = () => {
     setHighlightedIndex((prevIndex) => (prevIndex + 1) % modelParameterInsights.length);
-    window.speechSynthesis.cancel();
+    audioRef.current.pause();
   };
 
   return (
@@ -489,6 +479,7 @@ const ModelParameterTable = () => {
           </tbody>
         </table>
       </div>
+      <audio ref={audioRef} onEnded={handleAudioEnded} style={{ display: 'none' }} />
     </div>
   );
 };

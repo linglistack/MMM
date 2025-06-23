@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
+import ChartNarrator from '../components/ChartNarrator';
+import OptimizationSuggestions from '../components/OptimizationSuggestions';
 
 const Optimizer = () => {
   const [totalBudget, setTotalBudget] = useState(210);
   const [optimizationRunning, setOptimizationRunning] = useState(false);
+  const [activeNarrator, setActiveNarrator] = useState(null);
 
   // Current vs Optimized Allocation
   const allocationData = [
@@ -14,6 +17,94 @@ const Optimizer = () => {
     { channel: 'Meta Retargeting', current: 15, optimized: 12, currentRoi: 1.8, optimizedRoi: 2.0 },
     { channel: 'Linear TV', current: 10, optimized: 8, currentRoi: 1.5, optimizedRoi: 1.6 },
     { channel: 'Meta Prospecting', current: 8, optimized: 3, currentRoi: 0.9, optimizedRoi: 1.2 }
+  ];
+
+  // ROI Curve insights
+  const roiCurveInsights = [
+    {
+      text: "The ROI curve analysis shows diminishing returns as spend increases across channels.",
+      duration: 3000,
+      highlightArea: {
+        top: '30%',
+        left: '10%',
+        width: '80%',
+        height: '40%'
+      }
+    },
+    {
+      text: "Search Non-Branded maintains the highest ROI up to $40,000 spend, starting at 3.5x and gradually decreasing to 2.1x.",
+      duration: 4000,
+      highlightArea: {
+        top: '20%',
+        left: '20%',
+        width: '40%',
+        height: '30%'
+      }
+    },
+    {
+      text: "Influencers show strong initial performance with 4.2x ROI at low spend levels, but efficiency drops more rapidly after $20,000.",
+      duration: 4000,
+      highlightArea: {
+        top: '10%',
+        left: '5%',
+        width: '30%',
+        height: '40%'
+      }
+    },
+    {
+      text: "The optimal allocation point for Search Non-Branded appears to be around $52,000, where it maintains a healthy 2.4x ROI while maximizing absolute returns.",
+      duration: 4000,
+      highlightArea: {
+        top: '30%',
+        left: '40%',
+        width: '20%',
+        height: '30%'
+      }
+    }
+  ];
+
+  // Budget Allocation insights
+  const allocationInsights = [
+    {
+      text: "The optimization suggests significant changes to your current budget allocation across channels.",
+      duration: 3000,
+      highlightArea: {
+        top: '20%',
+        left: '10%',
+        width: '80%',
+        height: '60%'
+      }
+    },
+    {
+      text: "Search Non-Branded should receive a 15% increase in budget from $45,000 to $52,000, as it consistently delivers strong ROI even at higher spend levels.",
+      duration: 4000,
+      highlightArea: {
+        top: '20%',
+        left: '10%',
+        width: '15%',
+        height: '60%'
+      }
+    },
+    {
+      text: "Influencers show potential for growth, with a recommended 28% budget increase from $25,000 to $32,000, based on their high efficiency at current spend levels.",
+      duration: 4000,
+      highlightArea: {
+        top: '20%',
+        left: '20%',
+        width: '15%',
+        height: '60%'
+      }
+    },
+    {
+      text: "Meta Prospecting shows the largest recommended reduction, from $8,000 to $3,000, due to consistently lower ROI compared to other channels.",
+      duration: 4000,
+      highlightArea: {
+        top: '20%',
+        left: '75%',
+        width: '15%',
+        height: '60%'
+      }
+    }
   ];
 
   // ROI Curve Chart - Modern Styling
@@ -212,6 +303,15 @@ const Optimizer = () => {
     }
   };
 
+  // Handle narrator state changes
+  const handleNarratorStateChange = (chartId, isPlaying) => {
+    if (isPlaying) {
+      setActiveNarrator(chartId);
+    } else if (activeNarrator === chartId) {
+      setActiveNarrator(null);
+    }
+  };
+
   const runOptimization = () => {
     setOptimizationRunning(true);
     setTimeout(() => {
@@ -280,77 +380,34 @@ const Optimizer = () => {
           </div>
         </div>
 
-        {/* Optimization Suggestions Section */}
-        <div className="optimization-suggestions bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-8">
-          <div className="flex items-center justify-between mb-6">
-            <div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-1">Optimization Suggestions</h3>
-              <p className="text-sm text-gray-600">AI-powered recommendations for budget reallocation</p>
-            </div>
-            <div className="flex items-center space-x-2">
-              <div className="w-3 h-3 bg-primary-600 rounded-full"></div>
-              <span className="text-sm text-gray-600">Optimized</span>
-              <div className="w-3 h-3 bg-gray-500 rounded-full ml-4"></div>
-              <span className="text-sm text-gray-600">Current</span>
-            </div>
-          </div>
-          <HighchartsReact
-            highcharts={Highcharts}
-            options={allocationComparisonOptions}
-          />
-        </div>
 
-        {/* Budget Recommendations Section */}
-        <div className="budget-recommendations grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Budget Recommendations</h3>
-            <div className="space-y-4">
-              {allocationData.map((item, index) => (
-                <div key={index} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-                  <div className="flex-1">
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-sm font-medium text-gray-900">{item.channel}</span>
-                      <div className="flex items-center space-x-2">
-                        <span className="text-xs text-gray-500">${item.current}K</span>
-                        <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                        </svg>
-                        <span className="text-xs font-medium text-primary-600">${item.optimized}K</span>
-                      </div>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center space-x-2">
-                        <span className="text-xs text-gray-500">ROI:</span>
-                        <span className="text-xs text-gray-600">{item.currentRoi}x</span>
-                        <svg className="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                        </svg>
-                        <span className="text-xs font-medium text-primary-600">{item.optimizedRoi}x</span>
-                      </div>
-                      <div className={`text-xs font-medium px-2 py-1 rounded-full ${
-                        item.optimized > item.current 
-                          ? 'bg-green-100 text-green-800' 
-                          : item.optimized < item.current 
-                          ? 'bg-red-100 text-red-800'
-                          : 'bg-gray-100 text-gray-800'
-                      }`}>
-                        {item.optimized > item.current ? '+' : ''}{item.optimized - item.current}K
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">ROI Curves</h3>
-            <p className="text-sm text-gray-600 mb-4">Marginal ROI by budget allocation for top channels</p>
-            <HighchartsReact
-              highcharts={Highcharts}
-              options={roiCurveOptions}
+        {/* ROI Curves Section */}
+        <div className="bg-white rounded-lg shadow-sm p-6 mb-8 relative">
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">ROI Curves by Channel</h2>
+          <div id="roi-curves-chart" className="relative">
+            <HighchartsReact highcharts={Highcharts} options={roiCurveOptions} />
+            <ChartNarrator
+              chartId="roi-curves-chart"
+              insights={roiCurveInsights}
+              onPlayStateChange={(isPlaying) => handleNarratorStateChange('roi-curves', isPlaying)}
             />
           </div>
+        </div>
+
+        {/* Budget Allocation Section */}
+        <div className="bg-white rounded-lg shadow-sm p-6 mb-8 relative">
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">Current vs Optimized Allocation</h2>
+          <div id="allocation-chart" className="relative">
+            <HighchartsReact highcharts={Highcharts} options={allocationComparisonOptions} />
+            <ChartNarrator
+              chartId="allocation-chart"
+              insights={allocationInsights}
+              onPlayStateChange={(isPlaying) => handleNarratorStateChange('allocation', isPlaying)}
+            />
+          </div>
+        </div>
+        <div className="bg-white rounded-lg shadow-sm p-6 mb-8">
+          <OptimizationSuggestions />
         </div>
       </div>
     </div>

@@ -93,3 +93,59 @@ html {
 .section-transition {
   transition: all 0.3s ease-in-out;
 }
+
+/* Chart Narrator Styles */
+.highlight-overlay {
+  position: absolute;
+  pointer-events: none;
+  z-index: 10;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 0.4;
+  }
+
+  50% {
+    opacity: 0.6;
+  }
+
+  100% {
+    opacity: 0.4;
+  }
+}
+
+.chart-container {
+  position: relative;
+  transition: opacity 0.3s ease;
+}
+
+.chart-container.dimmed {
+  opacity: 0.5;
+}
+
+/* Ensure chart containers have proper positioning */
+#roi-curves-chart,
+#allocation-chart {
+  position: relative;
+}
+
+/* Narrator button hover effects */
+.narrator-button {
+  transition: all 0.2s ease;
+}
+
+.narrator-button:hover {
+  transform: scale(1.05);
+}
+
+/* Progress indicator */
+.narration-progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  background-color: #4f46e5;
+  transition: width 0.3s ease;
+}

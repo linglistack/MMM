@@ -332,6 +332,12 @@ const formatPercent = (val) => {
 const ModelParameterTable = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [highlightedIndex, setHighlightedIndex] = useState(0);
+  const [showDeeperModal, setShowDeeperModal] = useState(false);
+  const [showAskInput, setShowAskInput] = useState(false);
+  const [showConversationalModal, setShowConversationalModal] = useState(false);
+  const [userQuestion, setUserQuestion] = useState('');
+  const [chatHistory, setChatHistory] = useState([]);
+  const [playbackRate, setPlaybackRate] = useState(1);
   const audioRef = useRef(null);
 
   const currentInsight = isPlaying ? modelParameterInsights[highlightedIndex] : null;
@@ -409,6 +415,135 @@ const ModelParameterTable = () => {
     audioRef.current.pause();
   };
 
+  const handleFaster = () => {
+    if (audioRef.current) {
+      let newRate;
+      if (playbackRate === 1) {
+        newRate = 1.5;
+      } else if (playbackRate === 1.5) {
+        newRate = 2;
+      } else {
+        newRate = 1;
+      }
+      setPlaybackRate(newRate);
+      audioRef.current.playbackRate = newRate;
+    }
+  };
+
+  const getSpeedButtonText = () => {
+    if (playbackRate === 1) return 'Faster';
+    if (playbackRate === 1.5) return '1.5x';
+    if (playbackRate === 2) return '2x';
+    return 'Normal Speed';
+  };
+
+  const handleDiveDeeper = () => {
+    if (audioRef.current) audioRef.current.pause();
+    setShowDeeperModal(true);
+  };
+
+  const handlePauseToAsk = () => {
+    if (audioRef.current) audioRef.current.pause();
+    setShowConversationalModal(true);
+  };
+
+  const handleSendQuestion = () => {
+    if (!userQuestion.trim()) return;
+    
+    // 添加用户问题到聊天历史
+    const newUserMessage = {
+      type: 'user',
+      message: userQuestion,
+      timestamp: new Date()
+    };
+    
+    // 生成AI回复
+    const aiResponses = [
+      "Thanks for your question! We're currently working on this feature and will have more detailed insights available soon.",
+      "Great question! This functionality is in development. Our team is working to provide more comprehensive analysis tools.",
+      "I appreciate your interest! We're actively developing enhanced features to better answer questions like this.",
+      "Thank you for asking! This is a valuable question that we're working to address in our upcoming feature updates.",
+      "Excellent question! We're building more advanced analytical capabilities to provide deeper insights like this."
+    ];
+    
+    const randomResponse = aiResponses[Math.floor(Math.random() * aiResponses.length)];
+    
+    const aiMessage = {
+      type: 'ai',
+      message: randomResponse,
+      timestamp: new Date()
+    };
+    
+    // 更新聊天历史
+    setChatHistory(prev => [...prev, newUserMessage, aiMessage]);
+    setUserQuestion('');
+  };
+
+  const handleCloseConversational = () => {
+    setShowConversationalModal(false);
+    setChatHistory([]);
+    // 恢复音频播放
+    if (isPlaying && audioRef.current) {
+      audioRef.current.play();
+    }
+  };
+
+  const handleCloseDeeperModal = () => {
+    setShowDeeperModal(false);
+    // 恢复音频播放
+    if (isPlaying && audioRef.current) {
+      audioRef.current.play();
+    }
+  };
+
+  const getCurrentInsightDetails = () => {
+    if (!currentInsight) return null;
+    
+    const detailsMap = {
+      'intro': {
+        title: 'Model Structure Overview',
+        details: 'Our marketing mix model uses a comprehensive approach to understand performance drivers. The model structure separates controllable marketing activities (Media Variables) from external market forces (Base Variables). This separation allows us to isolate the true impact of our marketing investments and understand what portion of our results comes from paid efforts versus natural market dynamics.'
+      },
+      'media-vars': {
+        title: 'Media Variables Deep Dive',
+        details: 'Media Variables represent all paid marketing channels that we can directly control and optimize. These include traditional channels like TV and Print, digital channels like Facebook and Search, and owned channels like Newsletter. Each variable shows its incremental contribution to the overall outcome. The model uses adstock and saturation curves to account for carryover effects and diminishing returns, making the attribution more accurate than simple last-click models.'
+      },
+      'base-vars': {
+        title: 'Base Variables Analysis',
+        details: 'Base Variables capture external factors that influence performance but are largely outside our direct control. These include seasonal patterns, competitive actions, economic trends, and special events. Understanding these variables is crucial because they often drive the majority of performance variation. The model helps us separate organic growth from paid media impact, ensuring we don\'t over-attribute success to our marketing efforts.'
+      },
+      'newsletter': {
+        title: 'Newsletter Performance Insights',
+        details: 'Newsletter shows the highest average contribution (0.032) among all media channels, indicating strong performance in driving conversions. This high effectiveness likely stems from targeting engaged audiences with personalized content. The relatively low standard deviation suggests consistent performance across different time periods. Consider increasing newsletter frequency or expanding the subscriber base to maximize this high-performing channel.'
+      },
+      'facebook': {
+        title: 'Facebook Channel Analysis',
+        details: 'Facebook contributes 0.01 on average, which is moderate compared to other channels. While the contribution seems lower than newsletter, Facebook often serves different functions in the customer journey - awareness and consideration rather than direct conversion. The model captures the full customer journey impact, so this contribution represents Facebook\'s true incremental value including upper-funnel effects that may convert later through other channels.'
+      },
+      'media-sum': {
+        title: 'Total Media Impact',
+        details: 'All media channels combined account for 11.6% of total explained performance. This relatively modest percentage is actually typical for mature brands and indicates a healthy marketing ecosystem. It suggests that while paid media is important, the brand has strong organic momentum. This 11.6% represents pure incremental impact - meaning without these media investments, performance would be 11.6% lower, which translates to significant absolute revenue impact.'
+      },
+      'base-sum': {
+        title: 'Base Variables Dominance',
+        details: 'Base variables drive 88.4% of performance, highlighting the importance of external market factors. This high percentage indicates strong brand equity, seasonal patterns, and market position. While we can\'t directly control these factors, understanding them helps with forecasting and timing of marketing investments. The large base contribution also suggests opportunities to amplify these natural trends through strategic media timing.'
+      },
+      'competitor': {
+        title: 'Competitive Impact Analysis',
+        details: 'Competitor actions alone explain over 40% of performance variation - 4x more than all paid media combined. This massive impact suggests that competitive dynamics are the primary external driver of business performance. The model likely captures both direct competitive effects (when competitors advertise more, our performance drops) and indirect effects (market expansion when competitors invest in category growth). This insight emphasizes the importance of competitive intelligence and agile response strategies.'
+      },
+      'conclusion': {
+        title: 'Strategic Implications',
+        details: 'The model reveals that success comes from aligning marketing efforts with underlying market forces rather than just increasing spend. With base variables driving 88% of performance, the key is timing and amplification rather than pure volume. Media should be used strategically to capitalize on favorable base conditions (seasonality, competitive gaps) and defend against unfavorable ones. This insight shifts focus from "how much to spend" to "when and how to spend" for maximum efficiency.'
+      }
+    };
+
+    return detailsMap[currentInsight.id] || {
+      title: 'Current Insight Details',
+      details: 'This insight provides valuable information about the model parameters and their business implications. The analysis helps identify optimization opportunities and strategic recommendations for marketing mix allocation.'
+    };
+  };
+
   return (
     <div className="mt-12 bg-white p-6 rounded-lg shadow-sm relative">
       <div className="flex justify-between items-center mb-4">
@@ -423,6 +558,15 @@ const ModelParameterTable = () => {
             </button>
           ) : (
             <>
+              <button onClick={handleFaster} className="bg-blue-100 text-blue-700 px-3 py-2 rounded-lg hover:bg-blue-200 transition-colors text-sm">
+                {getSpeedButtonText()}
+              </button>
+              <button onClick={handleDiveDeeper} className="bg-green-100 text-green-700 px-3 py-2 rounded-lg hover:bg-green-200 transition-colors text-sm">
+                Dive deeper
+              </button>
+              <button onClick={handlePauseToAsk} className="bg-yellow-100 text-yellow-700 px-3 py-2 rounded-lg hover:bg-yellow-200 transition-colors text-sm">
+                Pause to ask
+              </button>
               <button onClick={handleNext} className="bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition-colors flex items-center space-x-2">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" >
                   <path fillRule="evenodd" d="M10.293 15.707a1 1 0 010-1.414L14.586 10l-4.293-4.293a1 1 0 111.414-1.414l5 5a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0z" clipRule="evenodd" />
@@ -480,6 +624,167 @@ const ModelParameterTable = () => {
         </table>
       </div>
       <audio ref={audioRef} onEnded={handleAudioEnded} style={{ display: 'none' }} />
+
+      {/* Conversational Modal - 类似 analyze for optimization */}
+      {showConversationalModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg shadow-xl w-full max-w-2xl mx-4 max-h-[80vh] flex flex-col">
+            {/* Header */}
+            <div className="flex justify-between items-center p-6 border-b flex-shrink-0">
+              <h2 className="text-xl font-semibold text-gray-800">Conversational Agent</h2>
+              <button 
+                onClick={handleCloseConversational}
+                className="text-gray-400 hover:text-gray-600 transition-colors"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            
+            {/* Chat Content */}
+            <div className="p-6 flex-1 overflow-y-auto">
+              {/* Initial AI Message */}
+              <div className="bg-gray-100 rounded-lg p-4 mb-4">
+                <div className="flex items-center space-x-2 mb-2">
+                  <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white text-sm font-semibold">
+                    AI
+                  </div>
+                  <span className="text-sm text-gray-600">Analysis paused</span>
+                </div>
+                <p className="text-gray-700">
+                  I've paused the analysis. What would you like to know more about? Feel free to ask any questions about the model parameters or insights.
+                </p>
+              </div>
+              
+              {/* Chat History */}
+              {chatHistory.map((msg, index) => (
+                <div key={index} className={`mb-4 ${msg.type === 'user' ? 'text-right' : ''}`}>
+                  {msg.type === 'user' ? (
+                    <div className="inline-block bg-blue-600 text-white rounded-lg px-4 py-2 max-w-xs">
+                      {msg.message}
+                    </div>
+                  ) : (
+                    <div className="bg-gray-100 rounded-lg p-4">
+                      <div className="flex items-center space-x-2 mb-2">
+                        <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white text-sm font-semibold">
+                          AI
+                        </div>
+                        <span className="text-sm text-gray-600">Just now</span>
+                      </div>
+                      <p className="text-gray-700">{msg.message}</p>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+            
+            {/* Input Area */}
+            <div className="p-6 border-t flex-shrink-0">
+              <div className="flex space-x-3">
+                <input
+                  type="text"
+                  value={userQuestion}
+                  onChange={(e) => setUserQuestion(e.target.value)}
+                  placeholder="Ask a question..."
+                  className="flex-1 border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  onKeyPress={(e) => e.key === 'Enter' && handleSendQuestion()}
+                />
+                <button
+                  onClick={handleSendQuestion}
+                  disabled={!userQuestion.trim()}
+                  className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+                >
+                  Send
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showDeeperModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg shadow-xl w-full max-w-4xl mx-4 max-h-[80vh] flex flex-col">
+            {/* Header */}
+            <div className="flex justify-between items-center p-6 border-b flex-shrink-0">
+              <h2 className="text-xl font-semibold text-gray-800">Deep Dive Analysis</h2>
+              <button 
+                onClick={handleCloseDeeperModal}
+                className="text-gray-400 hover:text-gray-600 transition-colors"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            
+            {/* Content */}
+            <div className="p-6 flex-1 overflow-y-auto">
+              {/* Current Insight */}
+              <div className="mb-6">
+                <div className="bg-blue-50 border-l-4 border-blue-500 p-4 mb-4">
+                  <div className="flex items-center mb-2">
+                    <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white text-sm font-semibold mr-3">
+                      {highlightedIndex + 1}
+                    </div>
+                    <h3 className="text-lg font-semibold text-gray-800">Current Insight</h3>
+                  </div>
+                  <p className="text-gray-700 leading-relaxed">
+                    {currentInsight?.text || 'No current insight available'}
+                  </p>
+                </div>
+              </div>
+
+              {/* Detailed Analysis */}
+              {getCurrentInsightDetails() && (
+                <div className="mb-6">
+                  <h3 className="text-lg font-semibold text-gray-800 mb-3">
+                    {getCurrentInsightDetails().title}
+                  </h3>
+                  <div className="bg-gray-50 rounded-lg p-4">
+                    <p className="text-gray-700 leading-relaxed">
+                      {getCurrentInsightDetails().details}
+                    </p>
+                  </div>
+                </div>
+              )}
+
+              {/* Additional Context */}
+              <div className="border-t pt-6">
+                <h3 className="text-lg font-semibold text-gray-800 mb-3">Key Takeaways</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                    <h4 className="font-semibold text-green-800 mb-2">✅ Actionable Insights</h4>
+                    <p className="text-green-700 text-sm">
+                      Focus on high-performing channels and optimize timing based on base variable patterns.
+                    </p>
+                  </div>
+                  <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                    <h4 className="font-semibold text-yellow-800 mb-2">⚠️ Considerations</h4>
+                    <p className="text-yellow-700 text-sm">
+                      Monitor competitive actions closely as they have 4x more impact than paid media.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Footer */}
+            <div className="p-6 border-t flex-shrink-0 flex justify-between items-center">
+              <span className="text-sm text-gray-500">
+                Insight {highlightedIndex + 1} of {modelParameterInsights.length}
+              </span>
+              <button
+                onClick={handleCloseDeeperModal}
+                className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+              >
+                Continue Analysis
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
@@ -498,6 +803,9 @@ const DataAnalysis = () => {
 
   const currentInsight2 = isPlaying2 ? insights2[highlightedIndex2] : null;
   const currentHighlight2 = currentInsight2;
+
+  const [showDeeperModal, setShowDeeperModal] = useState(false);
+  const [showAskInput, setShowAskInput] = useState(false);
 
   useEffect(() => {
     if (isPlaying && currentInsight && isSpeechReady) {

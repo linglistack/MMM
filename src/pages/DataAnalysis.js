@@ -84,15 +84,225 @@ const insights = [
     },
 ];
 
+const customerLevelData = [
+  { recency: '0-6M', frequency: '1X', email_opt: 0, customer_id: 30865, orders: 165, fb_co_lift_pct: '0.321', fb_co_stat_sig: '0.727', fb_rf_lift_pct: '-0.012', fb_rf_stat_sig: '-0.027', fb_co_reco: 1, fb_rf_reco: 0, fb_co_incr_conve: 53, fb_co_incr_revenue: 5615, fb_rf_incr_conversions: 0, fb_rf_incr_revenue: 0 },
+  { recency: '0-6M', frequency: '1X', email_opt: 1, customer_id: 11197, orders: 252, fb_co_lift_pct: '-0.286', fb_co_stat_sig: '-0.623', fb_rf_lift_pct: '-0.266', fb_rf_stat_sig: '-0.588', fb_co_reco: 0, fb_rf_reco: 0, fb_co_incr_conve: 0, fb_co_incr_revenue: 0, fb_rf_incr_conversions: 0, fb_rf_incr_revenue: 0 },
+  { recency: '0-6M', frequency: '2X', email_opt: 0, customer_id: 8159, orders: 74, fb_co_lift_pct: '0.563', fb_co_stat_sig: '0.888', fb_rf_lift_pct: '-0.721', fb_rf_stat_sig: '-0.671', fb_co_reco: 1, fb_rf_reco: 0, fb_co_incr_conve: 42, fb_co_incr_revenue: 3066, fb_rf_incr_conversions: 0, fb_rf_incr_revenue: 0 },
+  { recency: '0-6M', frequency: '2X', email_opt: 1, customer_id: 5212, orders: 194, fb_co_lift_pct: '0.046', fb_co_stat_sig: '0.115', fb_rf_lift_pct: '0.068', fb_rf_stat_sig: '0.17', fb_co_reco: 0, fb_rf_reco: 0, fb_co_incr_conve: 0, fb_co_incr_revenue: 0, fb_rf_incr_conversions: 0, fb_rf_incr_revenue: 0 },
+  { recency: '0-6M', frequency: '3X', email_opt: 0, customer_id: 3258, orders: 51, fb_co_lift_pct: '-0.248', fb_co_stat_sig: '-0.267', fb_rf_lift_pct: '0.41', fb_rf_stat_sig: '0.587', fb_co_reco: 0, fb_rf_reco: 0, fb_co_incr_conve: 0, fb_co_incr_revenue: 0, fb_rf_incr_conversions: 0, fb_rf_incr_revenue: 0 },
+  { recency: '0-6M', frequency: '3X', email_opt: 1, customer_id: 2832, orders: 140, fb_co_lift_pct: '-0.215', fb_co_stat_sig: '-0.398', fb_rf_lift_pct: '-0.708', fb_rf_stat_sig: '-0.832', fb_co_reco: 0, fb_rf_reco: 0, fb_co_incr_conve: 0, fb_co_incr_revenue: 0, fb_rf_incr_conversions: 0, fb_rf_incr_revenue: 0 },
+  { recency: '0-6M', frequency: '4X+', email_opt: 0, customer_id: 4082, orders: 145, fb_co_lift_pct: '0.022', fb_co_stat_sig: '0.046', fb_rf_lift_pct: '0.449', fb_rf_stat_sig: '0.886', fb_co_reco: 0, fb_rf_reco: 1, fb_co_incr_conve: 0, fb_co_incr_revenue: 0, fb_rf_incr_conversions: 65, fb_rf_incr_revenue: 2604 },
+  { recency: '0-6M', frequency: '4X+', email_opt: 1, customer_id: 5645, orders: 518, fb_co_lift_pct: '0.222', fb_co_stat_sig: '0.809', fb_rf_lift_pct: '0.382', fb_rf_stat_sig: '0.989', fb_co_reco: 1, fb_rf_reco: 1, fb_co_incr_conve: 0, fb_co_incr_revenue: 0, fb_rf_incr_conversions: 198, fb_rf_incr_revenue: 3434 },
+  { recency: '07-12M', frequency: '1X', email_opt: 0, customer_id: 19506, orders: 71, fb_co_lift_pct: '0.122', fb_co_stat_sig: '0.189', fb_rf_lift_pct: '-0.153', fb_rf_stat_sig: '-0.204', fb_co_reco: 1, fb_rf_reco: 0, fb_co_incr_conve: 9, fb_co_incr_revenue: 454, fb_rf_incr_conversions: 0, fb_rf_incr_revenue: 0 },
+  { recency: '07-12M', frequency: '1X', email_opt: 1, customer_id: 6575, orders: 54, fb_co_lift_pct: '0.48', fb_co_stat_sig: '0.713', fb_rf_lift_pct: '-1.514', fb_rf_stat_sig: '-0.845', fb_co_reco: 1, fb_rf_reco: 0, fb_co_incr_conve: 26, fb_co_incr_revenue: 1139, fb_rf_incr_conversions: 0, fb_rf_incr_revenue: 0 },
+  { recency: '07-12M', frequency: '2X', email_opt: 0, customer_id: 5037, orders: 34, fb_co_lift_pct: '0.125', fb_co_stat_sig: '0.138', fb_rf_lift_pct: '-0.674', fb_rf_stat_sig: '-0.482', fb_co_reco: 0, fb_rf_reco: 0, fb_co_incr_conve: 0, fb_co_incr_revenue: 0, fb_rf_incr_conversions: 0, fb_rf_incr_revenue: 0 },
+  { recency: '07-12M', frequency: '2X', email_opt: 1, customer_id: 2953, orders: 68, fb_co_lift_pct: '0.146', fb_co_stat_sig: '0.228', fb_rf_lift_pct: '-0.054', fb_rf_stat_sig: '-0.074', fb_co_reco: 0, fb_rf_reco: 0, fb_co_incr_conve: 0, fb_co_incr_revenue: 0, fb_rf_incr_conversions: 0, fb_rf_incr_revenue: 0 },
+  { recency: '07-12M', frequency: '3X', email_opt: 0, customer_id: 1820, orders: 17, fb_co_lift_pct: '0.091', fb_co_stat_sig: '0.071', fb_rf_lift_pct: '0', fb_rf_stat_sig: '-1', fb_co_reco: 0, fb_rf_reco: 0, fb_co_incr_conve: 0, fb_co_incr_revenue: 0, fb_rf_incr_conversions: 0, fb_rf_incr_revenue: 0 },
+  { recency: '07-12M', frequency: '3X', email_opt: 1, customer_id: 1482, orders: 56, fb_co_lift_pct: '-1.812', fb_co_stat_sig: '-0.91', fb_rf_lift_pct: '0.364', fb_rf_stat_sig: '0.539', fb_co_reco: 0, fb_rf_reco: 0, fb_co_incr_conve: 0, fb_co_incr_revenue: 0, fb_rf_incr_conversions: 0, fb_rf_incr_revenue: 0 },
+  { recency: '07-12M', frequency: '4X+', email_opt: 0, customer_id: 2277, orders: 55, fb_co_lift_pct: '0.067', fb_co_stat_sig: '0.092', fb_rf_lift_pct: '-0.325', fb_rf_stat_sig: '-0.346', fb_co_reco: 0, fb_rf_reco: 0, fb_co_incr_conve: 0, fb_co_incr_revenue: 0, fb_rf_incr_conversions: 0, fb_rf_incr_revenue: 0 },
+  { recency: '07-12M', frequency: '4X+', email_opt: 1, customer_id: 2369, orders: 151, fb_co_lift_pct: '0.347', fb_co_stat_sig: '0.765', fb_rf_lift_pct: '0.018', fb_rf_stat_sig: '0.037', fb_co_reco: 1, fb_rf_reco: 0, fb_co_incr_conve: 52, fb_co_incr_revenue: 5383, fb_rf_incr_conversions: 0, fb_rf_incr_revenue: 0 },
+  { recency: '12-18M', frequency: '1X', email_opt: 0, customer_id: 23223, orders: 25, fb_co_lift_pct: '0.855', fb_co_stat_sig: '0.976', fb_rf_lift_pct: '0', fb_rf_stat_sig: '-1', fb_co_reco: 1, fb_rf_reco: 0, fb_co_incr_conve: 21, fb_co_incr_revenue: 870, fb_rf_incr_conversions: 0, fb_rf_incr_revenue: 0 },
+  { recency: '12-18M', frequency: '1X', email_opt: 1, customer_id: 6845, orders: 31, fb_co_lift_pct: '0.234', fb_co_stat_sig: '0.254', fb_rf_lift_pct: '0.256', fb_rf_stat_sig: '0.278', fb_co_reco: 1, fb_rf_reco: 0, fb_co_incr_conve: 7, fb_co_incr_revenue: 509, fb_rf_incr_conversions: 0, fb_rf_incr_revenue: 0 },
+  { recency: '12-18M', frequency: '2X', email_opt: 0, customer_id: 5045, orders: 12, fb_co_lift_pct: '0', fb_co_stat_sig: '-0.999', fb_rf_lift_pct: '0', fb_rf_stat_sig: '-0.999', fb_co_reco: 0, fb_rf_reco: 0, fb_co_incr_conve: 0, fb_co_incr_revenue: 0, fb_rf_incr_conversions: 0, fb_rf_incr_revenue: 0 },
+  { recency: '12-18M', frequency: '2X', email_opt: 1, customer_id: 2305, orders: 19, fb_co_lift_pct: '0.792', fb_co_stat_sig: '0.833', fb_rf_lift_pct: '0.805', fb_rf_stat_sig: '0.84', fb_co_reco: 1, fb_rf_reco: 0, fb_co_incr_conve: 15, fb_co_incr_revenue: 556, fb_rf_incr_conversions: 0, fb_rf_incr_revenue: 0 },
+  { recency: '12-18M', frequency: '3X', email_opt: 0, customer_id: 1605, orders: 6, fb_co_lift_pct: '0.776', fb_co_stat_sig: '0.562', fb_rf_lift_pct: '0', fb_rf_stat_sig: '-0.955', fb_co_reco: 1, fb_rf_reco: 0, fb_co_incr_conve: 5, fb_co_incr_revenue: 161, fb_rf_incr_conversions: 0, fb_rf_incr_revenue: 0 },
+  { recency: '12-18M', frequency: '3X', email_opt: 1, customer_id: 895, orders: 10, fb_co_lift_pct: '0', fb_co_stat_sig: '-0.997', fb_rf_lift_pct: '0.57', fb_rf_stat_sig: '0.433', fb_co_reco: 0, fb_rf_reco: 0, fb_co_incr_conve: 0, fb_co_incr_revenue: 0, fb_rf_incr_conversions: 0, fb_rf_incr_revenue: 0 },
+  { recency: '12-18M', frequency: '4X+', email_opt: 0, customer_id: 1437, orders: 19, fb_co_lift_pct: '-1', fb_co_stat_sig: '0', fb_rf_lift_pct: '0.733', fb_rf_stat_sig: '0.803', fb_co_reco: 0, fb_rf_reco: 1, fb_co_incr_conve: 0, fb_co_incr_revenue: 0, fb_rf_incr_conversions: 0, fb_rf_incr_revenue: 0 },
+  { recency: '12-18M', frequency: '4X+', email_opt: 1, customer_id: 1083, orders: 35, fb_co_lift_pct: '0', fb_co_stat_sig: '-1', fb_rf_lift_pct: '0', fb_rf_stat_sig: '-1', fb_co_reco: 1, fb_rf_reco: 0, fb_co_incr_conve: 0, fb_co_incr_revenue: 0, fb_rf_incr_conversions: 0, fb_rf_incr_revenue: 0 },
+  { recency: '18-24M', frequency: '1X', email_opt: 0, customer_id: 17082, orders: 35, fb_co_lift_pct: '0.472', fb_co_stat_sig: '0.58', fb_rf_lift_pct: '0.61', fb_rf_stat_sig: '0.774', fb_co_reco: 1, fb_rf_reco: 0, fb_co_incr_conve: 0, fb_co_incr_revenue: 0, fb_rf_incr_conversions: 0, fb_rf_incr_revenue: 0 },
+  { recency: '18-24M', frequency: '1X', email_opt: 1, customer_id: 3815, orders: 15, fb_co_lift_pct: '0', fb_co_stat_sig: '-1', fb_rf_lift_pct: '0.255', fb_rf_stat_sig: '0.198', fb_co_reco: 0, fb_rf_reco: 0, fb_co_incr_conve: 0, fb_co_incr_revenue: 0, fb_rf_incr_conversions: 0, fb_rf_incr_revenue: 0 },
+  { recency: '18-24M', frequency: '2X', email_opt: 0, customer_id: 3670, orders: 15, fb_co_lift_pct: '0', fb_co_stat_sig: '-1', fb_rf_lift_pct: '0.247', fb_rf_stat_sig: '0.192', fb_co_reco: 0, fb_rf_reco: 0, fb_co_incr_conve: 0, fb_co_incr_revenue: 0, fb_rf_incr_conversions: 0, fb_rf_incr_revenue: 0 },
+  { recency: '18-24M', frequency: '2X', email_opt: 1, customer_id: 1263, orders: 13, fb_co_lift_pct: '0.829', fb_co_stat_sig: '0.857', fb_rf_lift_pct: '0.543', fb_rf_stat_sig: '0.412', fb_co_reco: 1, fb_rf_reco: 0, fb_co_incr_conve: 11, fb_co_incr_revenue: 270, fb_rf_incr_conversions: 0, fb_rf_incr_revenue: 0 },
+  { recency: '18-24M', frequency: '3X', email_opt: 0, customer_id: 1326, orders: 7, fb_co_lift_pct: '0', fb_co_stat_sig: '-0.992', fb_rf_lift_pct: '0', fb_rf_stat_sig: '-0.992', fb_co_reco: 0, fb_rf_reco: 0, fb_co_incr_conve: 0, fb_co_incr_revenue: 0, fb_rf_incr_conversions: 0, fb_rf_incr_revenue: 0 },
+  { recency: '18-24M', frequency: '3X', email_opt: 1, customer_id: 512, orders: 9, fb_co_lift_pct: '0', fb_co_stat_sig: '-0.998', fb_rf_lift_pct: '0', fb_rf_stat_sig: '-0.998', fb_co_reco: 1, fb_rf_reco: 0, fb_co_incr_conve: 0, fb_co_incr_revenue: 0, fb_rf_incr_conversions: 0, fb_rf_incr_revenue: 0 },
+  { recency: '18-24M', frequency: '4X+', email_opt: 0, customer_id: 1093, orders: 9, fb_co_lift_pct: '0.802', fb_co_stat_sig: '0.749', fb_rf_lift_pct: '0', fb_rf_stat_sig: '-0.992', fb_co_reco: 1, fb_rf_reco: 0, fb_co_incr_conve: 7, fb_co_incr_revenue: 567, fb_rf_incr_conversions: 0, fb_rf_incr_revenue: 0 },
+  { recency: '18-24M', frequency: '4X+', email_opt: 1, customer_id: 651, orders: 12, fb_co_lift_pct: '0.43', fb_co_stat_sig: '0.333', fb_rf_lift_pct: '0.516', fb_rf_stat_sig: '0.397', fb_co_reco: 0, fb_rf_reco: 0, fb_co_incr_conve: 0, fb_co_incr_revenue: 0, fb_rf_incr_conversions: 0, fb_rf_incr_revenue: 0 },
+  { recency: '24+M', frequency: '1X', email_opt: 0, customer_id: 76425, orders: 67, fb_co_lift_pct: '0.827', fb_co_stat_sig: '0.999', fb_rf_lift_pct: '0.353', fb_rf_stat_sig: '0.512', fb_co_reco: 1, fb_rf_reco: 0, fb_co_incr_conve: 55, fb_co_incr_revenue: 2223, fb_rf_incr_conversions: 0, fb_rf_incr_revenue: 0 },
+  { recency: '24+M', frequency: '1X', email_opt: 1, customer_id: 15009, orders: 45, fb_co_lift_pct: '0.323', fb_co_stat_sig: '0.418', fb_rf_lift_pct: '0.665', fb_rf_stat_sig: '0.895', fb_co_reco: 1, fb_rf_reco: 0, fb_co_incr_conve: 0, fb_co_incr_revenue: 0, fb_rf_incr_conversions: 0, fb_rf_incr_revenue: 0 },
+  { recency: '24+M', frequency: '2X', email_opt: 0, customer_id: 11431, orders: 18, fb_co_lift_pct: '0.094', fb_co_stat_sig: '0.073', fb_rf_lift_pct: '0.119', fb_rf_stat_sig: '0.093', fb_co_reco: 0, fb_rf_reco: 0, fb_co_incr_conve: 0, fb_co_incr_revenue: 0, fb_rf_incr_conversions: 0, fb_rf_incr_revenue: 0 },
+  { recency: '24+M', frequency: '2X', email_opt: 1, customer_id: 3428, orders: 15, fb_co_lift_pct: '0.208', fb_co_stat_sig: '0.162', fb_rf_lift_pct: '0', fb_rf_stat_sig: '-1', fb_co_reco: 0, fb_rf_reco: 0, fb_co_incr_conve: 0, fb_co_incr_revenue: 0, fb_rf_incr_conversions: 0, fb_rf_incr_revenue: 0 },
+  { recency: '24+M', frequency: '3X', email_opt: 0, customer_id: 2686, orders: 8, fb_co_lift_pct: '0.944', fb_co_stat_sig: '0.944', fb_rf_lift_pct: '0', fb_rf_stat_sig: '-0.955', fb_co_reco: 1, fb_rf_reco: 0, fb_co_incr_conve: 8, fb_co_incr_revenue: 259, fb_rf_incr_conversions: 14, fb_rf_incr_revenue: 1333 },
+  { recency: '24+M', frequency: '3X', email_opt: 1, customer_id: 1036, orders: 8, fb_co_lift_pct: '0.604', fb_co_stat_sig: '0.453', fb_rf_lift_pct: '0', fb_rf_stat_sig: '-0.992', fb_co_reco: 1, fb_rf_reco: 0, fb_co_incr_conve: 5, fb_co_incr_revenue: 126, fb_rf_incr_conversions: 0, fb_rf_incr_revenue: 0 },
+  { recency: '24+M', frequency: '4X+', email_opt: 0, customer_id: 1352, orders: 7, fb_co_lift_pct: '0', fb_co_stat_sig: '-0.992', fb_rf_lift_pct: '0', fb_rf_stat_sig: '-0.992', fb_co_reco: 0, fb_rf_reco: 0, fb_co_incr_conve: 0, fb_co_incr_revenue: 0, fb_rf_incr_conversions: 21, fb_rf_incr_revenue: 655 },
+  { recency: '24+M', frequency: '4X+', email_opt: 1, customer_id: 712, orders: 6, fb_co_lift_pct: '0', fb_co_stat_sig: '-0.975', fb_rf_lift_pct: '0.764', fb_rf_stat_sig: '0.56', fb_co_reco: 0, fb_rf_reco: 0, fb_co_incr_conve: 0, fb_co_incr_revenue: 0, fb_rf_incr_conversions: 0, fb_rf_incr_revenue: 0 },
+  { recency: '24+M', frequency: '4X+', email_opt: 1, customer_id: 712, orders: 6, fb_co_lift_pct: '0', fb_co_stat_sig: '-0.975', fb_rf_lift_pct: '0.764', fb_rf_stat_sig: '0.56', fb_co_reco: 0, fb_rf_reco: 0, fb_co_incr_conve: 0, fb_co_incr_revenue: 0, fb_rf_incr_conversions: 30, fb_rf_incr_revenue: 1043 },
+];
+
+const insights2 = [
+    { type: 'card', id: 'purpose2', text: "First, the purpose. We wanted to evaluate the incremental impact of Facebook Conversion Objective and Remarketing Funnel campaigns on revenue and conversions. We looked at this across different customer segments, defined by how recently they bought, how often they buy, and if they are on our email list." },
+    { type: 'card', id: 'hypothesis2', text: "Our hypothesis was that these Facebook campaigns would increase orders and revenue, especially for recent buyers, lower frequency customers, and those not getting our emails, since they are less saturated with our marketing." },
+    { type: 'card', id: 'insights2', text: "Let's dive into the key insights. We found some high-performing segments for Conversion Objective campaigns." },
+    { type: 'row', customer_id: 8159, text: "For example, customers who last bought 0 to 6 months ago, have bought twice, and are not on our email list, showed a 56.3% lift with a high statistical significance, generating over $3,000 in incremental revenue." },
+    { type: 'row', customer_id: 23223, text: "Similarly, customers who last bought 12 to 18 months ago, only once, and are not on email, showed a massive 85.5% lift and generated $870 in extra revenue." },
+    { type: 'row', customer_id: 76425, text: "And customers who haven't bought in over 24 months, but were also not on email, had an 82.7% lift, bringing in over $2,200." },
+    { type: 'card', id: 'insights2', text: "On the other hand, we noticed that targeting customers who are already on our email list often underperforms." },
+    { type: 'row', customer_id: 11197, text: "For recent, single-purchase customers on our email list, the campaign had a negative 28.6% lift." },
+    { type: 'row', customer_id: 1482, text: "And for customers who bought 7 to 12 months ago, have purchased multiple times, and are on our email list, the result was a dramatic negative 181% lift." },
+    { type: 'card', id: 'insights2', text: "The remarketing funnel campaign was generally weaker across the board." },
+    { type: 'row', customer_id: 5645, text: "For instance, one of the few segments with a positive result showed a 38% lift, but that generated zero dollars in actual revenue, making it ineffective." },
+    { type: 'card', id: 'takeaways2', text: "So, what are the strategic takeaways? First, prioritize Conversion Objective campaigns for low-frequency customers and those not on our email list. Second, avoid spending on high-frequency users or email subscribers who show negative results. And finally, use remarketing funnel campaigns cautiously, as they show little gain." }
+];
+
+const customerContext = [
+  { id: 'purpose2', title: 'Purpose', content: 'To evaluate the incremental impact of Facebook Conversion Objective (CO) and Remarketing Funnel (RF) campaigns on revenue and conversions across customer segments defined by Recency, Frequency, and Email Opt-In.' },
+  { id: 'hypothesis2', title: 'Hypothesis', content: 'Facebook CO and RF campaigns will increase orders and revenue, especially for: Recent buyers (0–6M), Lower frequency segments (1X–2X), Email non-opt-in users (less marketing saturation).' },
+  { id: 'insights2', title: 'Key Insights (with Data)', content: 'High-performing CO segments: 0–6M/2X/Email Opt-Out (+56.3% Lift, $3k revenue). Email Opt-In often underperforms: 07–12M/3X/Email Opt-In (−181.2% Lift). RF is weaker overall.' },
+  { id: 'takeaways2', title: 'Strategic Takeaways', content: '✅ Prioritize CO for low-frequency & non-email users. ⚠️ Avoid CO on high-frequency & email opt-in users with negative lift. 🚫 Use RF cautiously.' },
+]
+
+const CustomerLevelTable = ({ currentHighlight, isPlaying }) => {
+  const headers = [
+    { key: 'recency', name: 'Recency' },
+    { key: 'frequency', name: 'Frequency' },
+    { key: 'email_opt', name: 'Email Opt-In' },
+    { key: 'customer_id', name: 'Customer ID' },
+    { key: 'orders', name: 'Orders' },
+    { key: 'fb_co_lift_pct', name: 'FB CO Lift %' },
+    { key: 'fb_co_stat_sig', name: 'FB CO Stat Sig' },
+    { key: 'fb_rf_lift_pct', name: 'FB RF Lift %' },
+    { key: 'fb_rf_stat_sig', name: 'FB RF Stat Sig' },
+    { key: 'fb_co_reco', name: 'FB CO Reco' },
+    { key: 'fb_rf_reco', name: 'FB RF Reco' },
+    { key: 'fb_co_incr_conve', name: 'FB CO Incr Conve' },
+    { key: 'fb_co_incr_revenue', name: 'FB CO Incr Revenue' },
+    { key: 'fb_rf_incr_conversions', name: 'FB RF Incr Conversions' },
+    { key: 'fb_rf_incr_revenue', name: 'FB RF Incr Revenue' },
+  ];
+
+  const rowRefs = useRef([]);
+
+  useEffect(() => {
+    if (
+      isPlaying &&
+      currentHighlight?.type === 'row' &&
+      currentHighlight?.customer_id
+    ) {
+      const idx = customerLevelData.findIndex(row => row.customer_id === currentHighlight.customer_id);
+      if (idx !== -1 && rowRefs.current[idx]) {
+        rowRefs.current[idx].scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
+  }, [currentHighlight, isPlaying]);
+
+  const formatCell = (value, key) => {
+    const num = parseFloat(value);
+    // 色阶函数
+    const getColorGrade = (val, posMax, negMin) => {
+      if (isNaN(val)) return '';
+      if (val > 0) {
+        if (val > posMax * 0.8) return 'bg-green-300 text-green-900';
+        if (val > posMax * 0.5) return 'bg-green-200 text-green-900';
+        return 'bg-green-100 text-green-900';
+      } else if (val < 0) {
+        if (val < negMin * 0.8) return 'bg-red-300 text-red-900';
+        if (val < negMin * 0.5) return 'bg-red-200 text-red-900';
+        return 'bg-red-100 text-red-900';
+      }
+      return 'bg-gray-100 text-gray-800';
+    };
+
+    // 关键色阶列
+    if (key === 'fb_co_lift_pct') {
+      return (
+        <span className={`px-2 py-1 rounded ${getColorGrade(num, 1, -1)}`}>{num.toFixed(3)}</span>
+      );
+    }
+    if (key === 'fb_co_stat_sig') {
+      return (
+        <span className={`px-2 py-1 rounded ${getColorGrade(num, 1, -1)}`}>{num.toFixed(3)}</span>
+      );
+    }
+    if (key === 'fb_rf_lift_pct') {
+      return (
+        <span className={`px-2 py-1 rounded ${getColorGrade(num, 1, -1)}`}>{num.toFixed(3)}</span>
+      );
+    }
+    if (key === 'fb_rf_stat_sig') {
+      return (
+        <span className={`px-2 py-1 rounded ${getColorGrade(num, 1, -1)}`}>{num.toFixed(3)}</span>
+      );
+    }
+    if (key === 'fb_co_incr_revenue') {
+      const revenue = parseInt(value);
+      return (
+        <span className={`px-2 py-1 rounded ${getColorGrade(revenue, 3000, -100)}`}>{`$${revenue.toLocaleString()}`}</span>
+      );
+    }
+    if (key === 'email_opt') {
+        return value === 1 ? 'Opt-In' : 'Opt-Out';
+    }
+    if (key === 'fb_co_reco' || key === 'fb_rf_reco') {
+        return <span className={`inline-flex items-center justify-center w-6 h-6 rounded-full ${value === 1 ? 'bg-green-500 text-white' : 'bg-gray-200 text-gray-700'}`}>{value}</span>
+    }
+    if (key === 'fb_rf_incr_conversions') {
+      return num ? num.toLocaleString() : 0;
+    }
+    if (key === 'fb_rf_incr_revenue') {
+      const revenue = parseInt(value);
+      return (
+        <span className={`px-2 py-1 rounded ${revenue > 0 ? 'bg-green-100 text-green-900' : revenue < 0 ? 'bg-red-100 text-red-900' : ''}`}>{`$${revenue ? revenue.toLocaleString() : 0}`}</span>
+      );
+    }
+    if (typeof value === 'number') {
+        return value.toLocaleString();
+    }
+    return value;
+  };
+
+  return (
+    <div className="mt-8 bg-white p-6 rounded-lg shadow-sm">
+        <h2 className="text-xl font-bold text-gray-800 mb-4">Customer Level Detail</h2>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm text-left text-gray-700">
+            <thead className="sticky top-0 z-10 bg-white bg-gray-100 text-xs text-gray-700 uppercase tracking-wider">
+              <tr>
+                {headers.map(header => (
+                  <th key={header.key} scope="col" className="py-3 px-4">
+                    {header.name}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {customerLevelData.map((row, rowIndex) => {
+                const isRowHighlighted = currentHighlight?.type === 'row' && currentHighlight?.customer_id === row.customer_id;
+                const isDimmed = isPlaying && currentHighlight?.type === 'row' && !isRowHighlighted;
+
+                return (
+                    <tr
+                      key={rowIndex}
+                      ref={el => rowRefs.current[rowIndex] = el}
+                      className={`border-b border-gray-200 transition-all duration-300 ${isRowHighlighted ? 'bg-primary-50 ring-2 ring-primary-500' : ''} ${isDimmed ? 'opacity-30' : 'hover:bg-gray-50'}`}
+                    >
+                    {headers.map(header => (
+                        <td key={header.key} className="py-3 px-4">
+                        {formatCell(row[header.key], header.key)}
+                        </td>
+                    ))}
+                    </tr>
+                )
+              })}
+            </tbody>
+          </table>
+        </div>
+    </div>
+  )
+};
+
 const DataAnalysis = () => {
   const headers = ['Subgroup', 'Reach', 'Conversions', 'CR', 'Revenue', 'CCR', 'Lift %', 'Spend', 'aaRevenue', 'aaROAS'];
   const [isPlaying, setIsPlaying] = useState(false);
   const [highlightedIndex, setHighlightedIndex] = useState(0);
+  const [isPlaying2, setIsPlaying2] = useState(false);
+  const [highlightedIndex2, setHighlightedIndex2] = useState(0);
   const tableRef = useRef(null);
   const { isReady: isSpeechReady, getPremiumVoice } = useSpeechSynthesis();
 
   const currentInsight = isPlaying ? insights[highlightedIndex] : null;
   const currentHighlight = currentInsight?.highlight;
+
+  const currentInsight2 = isPlaying2 ? insights2[highlightedIndex2] : null;
+  const currentHighlight2 = currentInsight2;
 
   useEffect(() => {
     if (isPlaying && currentInsight && isSpeechReady) {
@@ -104,7 +314,6 @@ const DataAnalysis = () => {
         utterance.rate = 0.9;
         utterance.pitch = 1;
       } else {
-        // Fallback to default voice settings if no premium voice is found
         utterance.rate = 0.9;
         utterance.pitch = 1.1;
       }
@@ -125,6 +334,36 @@ const DataAnalysis = () => {
     return () => window.speechSynthesis.cancel();
   }, [isPlaying, highlightedIndex, isSpeechReady]);
 
+  useEffect(() => {
+    if (isPlaying2 && currentInsight2 && isSpeechReady) {
+      const utterance = new SpeechSynthesisUtterance(currentInsight2.text);
+      const premiumVoice = getPremiumVoice();
+      
+      if (premiumVoice) {
+        utterance.voice = premiumVoice;
+        utterance.rate = 0.9;
+        utterance.pitch = 1;
+      } else {
+        utterance.rate = 0.9;
+        utterance.pitch = 1.1;
+      }
+      
+      window.speechSynthesis.cancel();
+      window.speechSynthesis.speak(utterance);
+
+      utterance.onend = () => {
+        if (highlightedIndex2 < insights2.length - 1) {
+          setTimeout(() => setHighlightedIndex2(prev => prev + 1), 1000);
+        } else {
+          setIsPlaying2(false);
+        }
+      };
+    } else if (!isPlaying) {
+      window.speechSynthesis.cancel();
+    }
+    return () => window.speechSynthesis.cancel();
+  }, [isPlaying2, highlightedIndex2, isSpeechReady]);
+
   const handlePlay = () => {
     setHighlightedIndex(0);
     setIsPlaying(true);
@@ -137,7 +376,22 @@ const DataAnalysis = () => {
 
   const handleNext = () => {
     setHighlightedIndex((prevIndex) => (prevIndex + 1) % insights.length);
-    window.speechSynthesis.cancel(); // Stop current speech and let useEffect trigger the new one
+    window.speechSynthesis.cancel();
+  };
+
+  const handlePlay2 = () => {
+    setHighlightedIndex2(0);
+    setIsPlaying2(true);
+  };
+
+  const handleStop2 = () => {
+    setIsPlaying2(false);
+    window.speechSynthesis.cancel();
+  };
+
+  const handleNext2 = () => {
+    setHighlightedIndex2((prevIndex) => (prevIndex + 1) % insights2.length);
+    window.speechSynthesis.cancel();
   };
   
   return (
@@ -200,13 +454,13 @@ const DataAnalysis = () => {
       <div className={`bg-white p-6 rounded-lg shadow-sm transition-all duration-300 ${isPlaying && currentHighlight?.type === 'card' ? 'opacity-30' : ''}`} ref={tableRef}>
         <div className="overflow-x-auto">
           <table className="w-full text-sm text-left text-gray-700">
-            <thead className="bg-gray-100 text-xs text-gray-700 uppercase tracking-wider">
+            <thead className="sticky top-0 z-10 bg-white bg-gray-100 text-xs text-gray-700 uppercase tracking-wider">
               <tr>
                 <th scope="col" className="py-3 px-4 rounded-l-lg">Group</th>
                 {headers.map(header => {
                   const isColHighlighted = currentHighlight?.type === 'col' && currentHighlight?.name === header;
                   const isDimmed = isPlaying && currentHighlight?.type === 'col' && !isColHighlighted;
-                  return <th key={header} scope="col" className={`py-3 px-4 transition-all duration-300 ${isColHighlighted ? 'bg-primary-100' : ''} ${isDimmed ? 'opacity-30' : ''}`}>{header}</th>
+                  return <th key={header.key} scope="col" className={`py-3 px-4 transition-all duration-300 ${isColHighlighted ? 'bg-primary-100' : ''} ${isDimmed ? 'opacity-30' : ''}`}>{header.name}</th>
                 })}
                 <th scope="col" className="py-3 px-4 rounded-r-lg"></th>
               </tr>
@@ -266,6 +520,60 @@ const DataAnalysis = () => {
             </tbody>
           </table>
         </div>
+      </div>
+
+      {/* --- Second Experiment --- */}
+      <div className="mt-12 pt-8 border-t border-gray-200">
+        <div className="flex justify-between items-center mb-6">
+          <h1 className="text-2xl font-bold text-gray-800">Customer Segment Deep Dive</h1>
+          <div className="flex items-center space-x-2">
+              {!isPlaying2 ? (
+                <button onClick={handlePlay2} className="bg-white text-primary-600 px-4 py-2 rounded-lg hover:bg-primary-50 border border-primary-200 transition-colors flex items-center space-x-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd" />
+                  </svg>
+                  <span>Play Insights</span>
+                </button>
+              ) : (
+                <>
+                  <button onClick={handleNext2} className="bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition-colors flex items-center space-x-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" >
+                      <path fillRule="evenodd" d="M10.293 15.707a1 1 0 010-1.414L14.586 10l-4.293-4.293a1 1 0 111.414-1.414l5 5a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                      <path fillRule="evenodd" d="M4.293 15.707a1 1 0 010-1.414L8.586 10 4.293 5.707a1 1 0 011.414-1.414l5 5a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                    </svg>
+                    <span>Next Insight ({highlightedIndex2 + 1}/{insights2.length})</span>
+                  </button>
+                  <button onClick={handleStop2} className="bg-gray-600 text-white px-3 py-2 rounded-lg hover:bg-gray-700 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+                  </button>
+                </>
+              )}
+          </div>
+        </div>
+        
+        {/* Insight Card for second table */}
+        {currentInsight2 && (
+            <div className="fixed bottom-8 right-8 w-full max-w-sm bg-white p-4 rounded-lg shadow-lg border border-gray-200 z-20">
+                <h3 className="text-sm font-semibold text-gray-900 mb-2">Insight #{highlightedIndex2 + 1}</h3>
+                <p className="text-xs text-gray-600 leading-relaxed">{currentInsight2.text}</p>
+            </div>
+        )}
+
+        {/* Experiment Setup Section for second table */}
+        <div className="mb-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {customerContext.map(item => {
+              const isHighlighted = isPlaying2 && currentHighlight2?.type === 'card' && currentHighlight2.id === item.id;
+              const isDimmed = isPlaying2 && currentHighlight2?.type === 'card' && !isHighlighted;
+              return (
+                  <div key={item.id} className={`bg-white p-4 rounded-lg shadow-sm transition-all duration-300 ${isHighlighted ? 'ring-2 ring-primary-500 scale-105' : ''} ${isDimmed ? 'opacity-30' : ''}`}>
+                      <h2 className="text-lg font-bold text-gray-800 mb-2">{item.title}</h2>
+                      <p className="text-sm text-gray-600 whitespace-pre-line">{item.content}</p>
+                  </div>
+              )
+          })}
+        </div>
+        
+        <CustomerLevelTable currentHighlight={currentHighlight2} isPlaying={isPlaying2} />
       </div>
     </div>
   );

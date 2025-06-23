@@ -1101,7 +1101,7 @@ function App() {
           
           {/* Original Content with Highlight Overlay */}
           <div className={focusMode ? 'relative' : ''}>
-            {menuItems[selectedTab]?.component}
+          {menuItems[selectedTab]?.component}
           </div>
         </main>
       </div>
